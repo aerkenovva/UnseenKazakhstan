@@ -4,67 +4,176 @@
     <meta charset="UTF-8">
     <title>Unseen Kazakhstan | Regions & Map</title>
     <link rel="stylesheet" href="css/style.css">
+    
+    <!-- Добавляем стили специально для красивой таблицы и карты -->
+    <style>
+        .map-section {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            border: 2px dashed #cbd5e1;
+            color: #64748b;
+        }
+
+        .table-wrapper {
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            overflow: hidden; /* Чтобы углы таблицы не вылезали за рамку */
+            background-color: #ffffff;
+            margin-top: 20px;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .custom-table th {
+            background-color: #00afca;
+            color: #ffffff;
+            padding: 18px 20px;
+            font-weight: bold;
+            font-size: 16px;
+            letter-spacing: 1px;
+        }
+
+        .custom-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #1a252c;
+            font-size: 15px;
+        }
+
+        /* Убираем линию у последней строки */
+        .custom-table tbody tr:last-of-type td {
+            border-bottom: none;
+        }
+
+        /* Чередование цветов строк (зебра) */
+        .custom-table tbody tr:nth-of-type(even) {
+            background-color: #f0f7fa;
+        }
+
+        /* Эффект при наведении мышки на строку */
+        .custom-table tbody tr:hover {
+            background-color: #e0f2fe;
+            transition: background-color 0.3s ease;
+        }
+    </style>
 </head>
 <body>
 
-    <div id="main-header">
-        <div class="logo">UNSEEN <span>KAZAKHSTAN</span></div>
-        <div class="nav-menu" style="text-align: center; margin-top: 10px;">
+    <!-- Шапка Flexbox -->
+    <header id="main-header">
+        <a href="index.html" class="logo">UNSEEN <span>KAZAKHSTAN</span></a>
+        <nav class="nav-menu">
             <a href="index.html">Home</a>
             <a href="destinations.html">Hidden Gems</a>
             <a href="regions.html">Regions & Map</a>
             <a href="creators.html">Team</a>
             <a href="tips.html">Travel Tips</a>
             <a href="planner.html">Trip Planner</a>
+        </nav>
+    </header>
+
+    <div class="standard-container">
+        <h1>Regional Travel Directory & Map</h1>
+        <p style="text-align: center; margin-bottom: 30px;">Explore unexplored locations organized by administrative regions and view our interactive map.</p>
+        
+        <!-- Место для карты -->
+        <div class="map-section">
+            <h2 style="color: #cbd5e1; margin: 0;">🗺️ Interactive Map of Kazakhstan</h2>
+            <p style="margin: 5px 0 0 0;">(Interactive map integration coming soon)</p>
+        </div>
+
+        <!-- Красивая таблица -->
+        <div class="table-wrapper">
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Region</th>
+                        <th>Location Name</th>
+                        <th>Category</th>
+                        <th>Best Season</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Karaganda</td>
+                        <td><strong>Bektau-Ata Massif</strong></td>
+                        <td>Volcanic Nature</td>
+                        <td>May - September</td>
+                    </tr>
+                    <tr>
+                        <td>Mangystau</td>
+                        <td><strong>Bozzhyra Tract</strong></td>
+                        <td>Chalk Canyons</td>
+                        <td>April - June, Sept - Oct</td>
+                    </tr>
+                    <tr>
+                        <td>Atyrau</td>
+                        <td><strong>Akkergeshen Plateau</strong></td>
+                        <td>White Formations</td>
+                        <td>May - August</td>
+                    </tr>
+                    <tr>
+                        <td>Almaty</td>
+                        <td><strong>Charyn Canyon</strong></td>
+                        <td>Red Sandstone</td>
+                        <td>April - May, Sept - Oct</td>
+                    </tr>
+                    <tr>
+                        <td>Almaty</td>
+                        <td><strong>Kolsay Lakes</strong></td>
+                        <td>Alpine Lakes</td>
+                        <td>May - September</td>
+                    </tr>
+                    <tr>
+                        <td>Zhetysu</td>
+                        <td><strong>Altyn Emel & Singing Dune</strong></td>
+                        <td>Desert National Park</td>
+                        <td>April - May, Sept - Oct</td>
+                    </tr>
+                    <tr>
+                        <td>Pavlodar</td>
+                        <td><strong>Bayanaul Park</strong></td>
+                        <td>Mountain Oasis</td>
+                        <td>June - August</td>
+                    </tr>
+                    <tr>
+                        <td>Karaganda</td>
+                        <td><strong>Karkaraly Mountains</strong></td>
+                        <td>Mountain Forests</td>
+                        <td>June - September</td>
+                    </tr>
+                    <tr>
+                        <td>Almaty</td>
+                        <td><strong>Turgen Gorge</strong></td>
+                        <td>Mountain Valley</td>
+                        <td>May - October</td>
+                    </tr>
+                    <tr>
+                        <td>Almaty</td>
+                        <td><strong>Kaindy Sunken Forest</strong></td>
+                        <td>Alpine Lakes</td>
+                        <td>June - October</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <div class="content-box">
-        <h1>Regional Travel Directory</h1>
-        <p>Explore unexplored locations organized by administrative regions and accessibility levels.</p>
-        
-        <table border="1" style="width: 100%; border-collapse: collapse; margin-top: 20px; text-align: left;">
-            <thead>
-                <tr style="background-color: #334155; color: #ffffff;">
-                    <th style="padding: 10px;">Region</th>
-                    <th style="padding: 10px;">Location Name</th>
-                    <th style="padding: 10px;">Category</th>
-                    <th style="padding: 10px;">Best Season</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="padding: 10px;">Karaganda</td>
-                    <td style="padding: 10px;">Bektau-Ata Massif</td>
-                    <td style="padding: 10px;">Volcanic Nature</td>
-                    <td style="padding: 10px;">May - September</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;">Mangystau</td>
-                    <td style="padding: 10px;">Bozzhyra Tract</td>
-                    <td style="padding: 10px;">Chalk Canyons</td>
-                    <td style="padding: 10px;">April - June, Sept - Oct</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;">Atyrau</td>
-                    <td style="padding: 10px;">Akkergeshen Plateau</td>
-                    <td style="padding: 10px;">White Formations</td>
-                    <td style="padding: 10px;">May - August</td>
-                </tr>
-                <tr>
-                    <td style="padding: 10px;">Almaty</td>
-                    <td style="padding: 10px;">Kaindy Sunken Forest</td>
-                    <td style="padding: 10px;">Alpine Lakes</td>
-                    <td style="padding: 10px;">June - October</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="main-footer">
+    <!-- Подвал -->
+    <footer class="main-footer">
         <p>Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
         <p>Group SE-2502 | Astana IT University &copy; 2026</p>
-    </div>
+    </footer>
 
 </body>
 </html>

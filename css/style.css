@@ -1,4 +1,13 @@
-/* --- 1. ELEMENT SELECTORS --- */
+/* --- БАЗОВЫЕ СТИЛИ --- */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -6,10 +15,13 @@ body {
     background-color: #f0f7fa;
     color: #1a252c;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 h1, h2, h3 {
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', sans-serif;
+    font-family: 'Trebuchet MS', sans-serif;
     color: #00afca;
     text-align: center;
     letter-spacing: 0.5px;
@@ -20,73 +32,219 @@ p {
     color: #334155;
 }
 
-/* --- 2. ID SELECTOR --- */
+/* --- TASK 1: FLEXBOX NAVIGATION --- */
 #main-header {
     background-color: #00afca;
-    padding: 20px;
+    padding: 15px 40px;
     border-bottom: 4px solid #fec107;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: 0;
+    z-index: 1000;
 }
 
-/* --- 3. CLASS SELECTORS --- */
 .logo {
     font-family: 'Trebuchet MS', sans-serif;
-    font-size: 26px;
+    font-size: 24px;
     font-weight: bold;
     color: #ffffff;
-    text-align: center;
-    letter-spacing: 1px;
+    text-decoration: none;
 }
 
 .logo span {
     color: #fec107;
 }
 
-.content-box {
-    background-color: #ffffff;
-    width: 80%;
-    margin: 30px auto;
-    padding: 25px;
-    border: 1px solid #e2e8f0;
-    border-top: 4px solid #00afca;
+.nav-menu {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
-.card {
-    background-color: #ffffff;
-    padding: 25px;
-    margin-top: 25px;
-    border-radius: 12px;
-    border-left: 6px solid #fec107;
-    border-top: 1px solid #e2e8f0;
-    border-right: 1px solid #e2e8f0;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-/* Правильный единый блок для изображений */
-.destination-img, .location-img {
-    width: 100%;
-    max-width: 500px; /* Не дает картинке растягиваться больше ее качества */
-    height: auto; /* Сохраняет естественные пропорции */
-    display: block;
-    margin: 20px auto; /* Центрирует картинку по середине карточки */
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-}
-/* --- 4. DESCENDANT SELECTOR --- */
 .nav-menu a {
     font-family: 'Trebuchet MS', sans-serif;
     color: #ffffff;
     text-decoration: none;
-    margin: 0 12px;
     font-weight: bold;
+    transition: color 0.3s ease;
 }
 
 .nav-menu a:hover {
     color: #fec107;
 }
 
-/* Footer */
+/* --- TASK 3: PAGE LAYOUT WITH GRID (Для index.html) --- */
+.grid-layout {
+    display: grid;
+    grid-template-areas: "sidebar main";
+    grid-template-columns: 250px 1fr;
+    gap: 20px;
+    padding: 20px;
+    flex: 1;
+}
+
+.sidebar {
+    grid-area: sidebar;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #fec107;
+    height: fit-content;
+}
+
+.content-box {
+    grid-area: main;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    border-top: 4px solid #00afca;
+}
+
+/* Контейнер для остальных страниц */
+.standard-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 30px auto;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    border-top: 4px solid #00afca;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    flex: 1;
+}
+
+/* --- TASK 2: FLEXBOX CARDS (Для локаций) --- */
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 300px;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    border-left: 6px solid #fec107;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.card h2, .card h3 {
+    margin-top: 0;
+}
+
+.card-btn {
+    margin-top: auto;
+    padding: 12px;
+    background-color: #00afca;
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.card-btn:hover {
+    background-color: #fec107;
+    color: #1a252c;
+}
+
+.destination-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+/* --- КАРТОЧКИ КОМАНДЫ (Для creators.html) --- */
+.team-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    border-top: 6px solid #fec107;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    flex: 1 1 300px;
+    transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+}
+
+.team-avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 4px solid #00afca;
+    object-fit: cover;
+    margin-bottom: 15px;
+}
+
+/* --- TASK 4: IMAGE GALLERY (GRID) --- */
+.gallery-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 250px;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-caption {
+    position: absolute;
+    bottom: -100%;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 175, 202, 0.9);
+    color: white;
+    text-align: center;
+    padding: 15px 10px;
+    transition: bottom 0.3s ease;
+    font-weight: bold;
+}
+
+.gallery-item:hover .gallery-caption {
+    bottom: 0;
+}
+
+/* --- FOOTER --- */
 .main-footer {
     text-align: center;
     padding: 20px;
@@ -94,9 +252,33 @@ p {
     color: #ffffff;
     font-size: 14px;
     border-top: 4px solid #fec107;
-    margin-top: 40px;
+    margin-top: auto;
 }
 
 .main-footer strong {
     color: #fec107;
+}
+
+/* --- АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ --- */
+@media (max-width: 768px) {
+    #main-header {
+        flex-direction: column;
+        padding: 15px;
+    }
+    
+    .nav-menu {
+        margin-top: 15px;
+        justify-content: center;
+    }
+
+    .grid-layout {
+        grid-template-areas:
+            "sidebar"
+            "main";
+        grid-template-columns: 1fr;
+    }
+
+    .gallery-container {
+        grid-template-columns: 1fr;
+    }
 }

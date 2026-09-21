@@ -7,45 +7,50 @@
 </head>
 <body>
 
-    <div id="main-header">
-        <div class="logo">UNSEEN <span>KAZAKHSTAN</span></div>
-        <div class="nav-menu" style="text-align: center; margin-top: 10px;">
+    <!-- Новая шапка Flexbox -->
+    <header id="main-header">
+        <a href="index.html" class="logo">UNSEEN <span>KAZAKHSTAN</span></a>
+        <nav class="nav-menu">
             <a href="index.html">Home</a>
             <a href="destinations.html">Hidden Gems</a>
             <a href="regions.html">Regions & Map</a>
             <a href="creators.html">Team</a>
             <a href="tips.html">Travel Tips</a>
             <a href="planner.html">Trip Planner</a>
-        </div>
-    </div>
+        </nav>
+    </header>
 
-    <div class="content-box">
+    <div class="standard-container">
         <h1>Expedition Safety & Travel Tips</h1>
-        <p>Essential recommendations for traveling off the beaten path across remote Kazakh regions.</p>
+        <p style="text-align: center;">Essential recommendations for traveling off the beaten path across remote Kazakh regions.</p>
 
-        <div class="card">
-            <h2>01. Off-Road Preparation Checklist</h2>
-            <ul>
-                <li><strong>Vehicle:</strong> 4x4 off-road vehicle with spare tires and extra fuel supply.</li>
-                <li><strong>Navigation:</strong> Offline GPS maps and satellite communicators (mobile signal may be absent).</li>
-                <li><strong>Water & Supplies:</strong> Minimum 5 liters of fresh drinking water per person per day.</li>
-            </ul>
-        </div>
+        <!-- Используем Flexbox для карточек с советами -->
+        <div class="card-container">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">01. Off-Road Checklist</h2>
+                <ul style="line-height: 2;">
+                    <li><strong>Vehicle:</strong> 4x4 off-road vehicle with spare tires and extra fuel supply.</li>
+                    <li><strong>Navigation:</strong> Offline GPS maps and satellite communicators.</li>
+                    <li><strong>Water & Supplies:</strong> Minimum 5 liters of fresh drinking water per person.</li>
+                </ul>
+            </div>
 
-        <div class="card">
-            <h2>02. Eco-Friendly Travel Rules</h2>
-            <ol>
-                <li>Leave no trace: pack out all personal trash and camping gear.</li>
-                <li>Respect nature: do not damage fragile chalk formations or ancient rock art.</li>
-                <li>Camp responsibly: use designated fire pits and avoid altering natural habitats.</li>
-            </ol>
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">02. Eco-Friendly Rules</h2>
+                <ol style="line-height: 2;">
+                    <li><strong>Leave no trace:</strong> Pack out all personal trash and camping gear.</li>
+                    <li><strong>Respect nature:</strong> Do not damage fragile chalk formations or ancient rock art.</li>
+                    <li><strong>Camp responsibly:</strong> Use designated fire pits and avoid altering natural habitats.</li>
+                </ol>
+            </div>
         </div>
     </div>
 
-    <div class="main-footer">
+    <!-- Новый подвал (Footer) -->
+    <footer class="main-footer">
         <p>Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
         <p>Group SE-2502 | Astana IT University &copy; 2026</p>
-    </div>
+    </footer>
 
 </body>
 </html>

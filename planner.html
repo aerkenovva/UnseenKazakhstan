@@ -7,58 +7,82 @@
 </head>
 <body>
 
-    <div id="main-header">
-        <div class="logo">UNSEEN <span>KAZAKHSTAN</span></div>
-        <div class="nav-menu" style="text-align: center; margin-top: 10px;">
+    <header id="main-header">
+        <a href="index.html" class="logo">UNSEEN <span>KAZAKHSTAN</span></a>
+        <nav class="nav-menu">
             <a href="index.html">Home</a>
             <a href="destinations.html">Hidden Gems</a>
             <a href="regions.html">Regions & Map</a>
             <a href="creators.html">Team</a>
             <a href="tips.html">Travel Tips</a>
             <a href="planner.html">Trip Planner</a>
-        </div>
-    </div>
+        </nav>
+    </header>
 
-    <div class="content-box">
+    <div class="standard-container">
         <h1>Plan Your Custom Expedition</h1>
-        <p>Fill out the form below to receive a personalized travel itinerary and regional route advice.</p>
+        <p style="text-align: center;">Fill out the form below to receive a personalized travel itinerary.</p>
         
-        <form style="margin-top: 20px;">
+        <form style="margin-top: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+            
+            <!-- Имя -->
             <p>
-                <label for="username">Your Full Name:</label><br>
-                <input type="text" id="username" name="username" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+                <label for="firstname" style="font-weight: bold; color: #00afca;">First Name:</label><br>
+                <input type="text" id="firstname" name="firstname" placeholder="Enter your first name" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;" required>
             </p>
 
+            <!-- Фамилия -->
             <p>
-                <label for="email">Email Address:</label><br>
-                <input type="email" id="email" name="email" style="width: 100%; padding: 8px; margin-top: 5px;" required>
+                <label for="lastname" style="font-weight: bold; color: #00afca;">Last Name:</label><br>
+                <input type="text" id="lastname" name="lastname" placeholder="Enter your last name" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;" required>
             </p>
 
+            <!-- Почта -->
             <p>
-                <label for="destination">Select Preferred Destination:</label><br>
-                <select id="destination" name="destination" style="width: 100%; padding: 8px; margin-top: 5px;">
-                    <option value="bektau">Bektau-Ata Volcanic Oasis (Karaganda)</option>
-                    <option value="bozzhyra">Bozzhyra Tract (Mangystau)</option>
-                    <option value="akkergeshen">Akkergeshen Plateau (Atyrau)</option>
-                    <option value="kaindy">Kaindy Lake (Almaty Region)</option>
+                <label for="email" style="font-weight: bold; color: #00afca;">Email Address:</label><br>
+                <input type="email" id="email" name="email" placeholder="Enter your email" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;" required>
+            </p>
+
+            <!-- Количество людей (Специальное числовое поле) -->
+            <p>
+                <label for="people" style="font-weight: bold; color: #00afca;">Number of People:</label><br>
+                <input type="number" id="people" name="people" min="1" max="50" placeholder="Enter number of people (e.g., 2)" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;" required>
+            </p>
+
+            <!-- 10 Локаций -->
+            <p>
+                <label for="destination" style="font-weight: bold; color: #00afca;">Select Preferred Destination:</label><br>
+                <select id="destination" name="destination" style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;" required>
+                    <option value="" disabled selected>Choose a location...</option>
+                    <option value="bektau">Bektau-Ata Volcanic Oasis</option>
+                    <option value="bozzhyra">Bozzhyra Tract</option>
+                    <option value="akkergeshen">Akkergeshen Plateau</option>
+                    <option value="charyn">Charyn Canyon</option>
+                    <option value="kolsay">Kolsay Lakes</option>
+                    <option value="altynemel">Altyn Emel & Singing Dune</option>
+                    <option value="bayanaul">Bayanaul Park</option>
+                    <option value="karkaraly">Karkaraly Mountains</option>
+                    <option value="turgen">Turgen Gorge</option>
+                    <option value="kaindy">Kaindy Sunken Forest</option>
                 </select>
             </p>
 
+            <!-- Комментарии -->
             <p>
-                <label for="notes">Travel Notes & Group Size:</label><br>
-                <textarea id="notes" name="notes" rows="4" style="width: 100%; padding: 8px; margin-top: 5px;"></textarea>
+                <label for="notes" style="font-weight: bold; color: #00afca;">Additional Travel Notes:</label><br>
+                <textarea id="notes" name="notes" rows="4" placeholder="Any special requests or details..." style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #cbd5e1; border-radius: 6px;"></textarea>
             </p>
 
-            <p style="text-align: center;">
-                <input type="submit" value="Submit Request" style="background-color: #38bdf8; color: #0f141d; padding: 10px 20px; font-weight: bold; border: none; cursor: pointer;">
+            <p style="text-align: center; margin-top: 25px;">
+                <input type="submit" value="Submit Request" class="card-btn" style="width: 100%; border: none; cursor: pointer; font-size: 16px; padding: 12px;">
             </p>
         </form>
     </div>
 
-    <div class="main-footer">
+    <footer class="main-footer">
         <p>Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
         <p>Group SE-2502 | Astana IT University &copy; 2026</p>
-    </div>
+    </footer>
 
 </body>
 </html>
