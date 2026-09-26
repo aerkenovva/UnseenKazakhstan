@@ -102,16 +102,16 @@ a {
     border: 1px solid var(--kz-border);
     border-top: 4px solid var(--kz-blue);
     border-radius: 14px;
-    box-shadow: 0 8px 20px rgba(26, 37, 44, 0.06);
+    box-shadow: 0 4px 12px rgba(26, 37, 44, 0.05);
 }
 
 .section-label {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 4px 10px;
     border-radius: 20px;
     background-color: #e4f6fa;
     color: var(--kz-blue-dark);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 700;
 }
 
@@ -144,14 +144,14 @@ a {
     border: 1px solid var(--kz-border);
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 12px 28px rgba(26, 37, 44, 0.12);
+    box-shadow: 0 8px 20px rgba(26, 37, 44, 0.10);
     border-bottom: 6px solid var(--kz-gold);
 }
 
 .hero-image {
     display: block;
     width: 100%;
-    height: 430px;
+    height: 340px;
     object-fit: cover;
 }
 
@@ -233,7 +233,7 @@ a {
 
 .carousel-image {
     width: 100%;
-    height: 500px;
+    height: 420px;
     object-fit: cover;
 }
 
@@ -309,7 +309,7 @@ a {
 
 .role-tag {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 4px 10px;
     border-radius: 18px;
     background-color: #e4f6fa;
     color: var(--kz-blue-dark);
@@ -438,7 +438,7 @@ a {
     }
 
     .hero-image {
-        height: 250px;
+        height: 220px;
     }
 
     .carousel-image {
@@ -488,7 +488,7 @@ a {
     }
 
     .hero-image {
-        height: 350px;
+        height: 290px;
     }
 
     .carousel-image {
@@ -520,5 +520,27 @@ a {
 
     .mq-card-group {
         grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Final visual cleanup */
+.hero-copy {
+    max-width: 560px;
+}
+
+.page-card + .page-card {
+    margin-top: 18px;
+}
+
+@media (min-width: 992px) {
+    .hero-copy {
+        padding-right: 12px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .hero-copy {
+        max-width: none;
+        text-align: center;
     }
 }
