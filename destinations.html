@@ -1,149 +1,276 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Unseen Kazakhstan | Hidden Gems</title>
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unseen Kazakhstan | Hidden Gems</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <header id="main-header">
-        <a href="index.html" class="logo">UNSEEN <span>KAZAKHSTAN</span></a>
-        <nav class="nav-menu">
-            <a href="index.html">Home</a>
-            <a href="destinations.html">Hidden Gems</a>
-            <a href="regions.html">Regions & Map</a>
-            <a href="creators.html">Team</a>
-            <a href="tips.html">Travel Tips</a>
-            <a href="planner.html">Trip Planner</a>
-        </nav>
-    </header>
+<nav class="navbar navbar-expand-lg navbar-dark bg-kz sticky-top" aria-label="Main navigation">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">UNSEEN <span>KAZAKHSTAN</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions & Map</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
 
-    <div class="standard-container">
-        <h1>Unexplored Locations of Kazakhstan</h1>
-        <p style="text-align: center;">Discover pristine natural monuments, alien-like landscapes, and sacred places.</p>
-
-        <!-- 10 Карточек на Flexbox -->
-        <div class="card-container">
-            <div class="card">
-                <img src="images/Bektau-Ata.jpeg" alt="Bektau-Ata" class="destination-img">
-                <h3>Bektau-Ata Oasis</h3>
-                <p>A unique volcanic mountain range rising from the flat Kazakh steppe. Famous for subterranean water caves.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Bozzhyra.jpg" alt="Bozzhyra Tract" class="destination-img">
-                <h3>Bozzhyra Tract</h3>
-                <p>A striking white limestone canyon situated on the Ustyurt Plateau, created by the ancient ocean bed.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Akkergeshen.jpg" alt="Akkergeshen" class="destination-img">
-                <h3>Akkergeshen Plateau</h3>
-                <p>Unique snow-white chalk deposits known for weirdly shaped limestone towers and ancient fossils.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Charyn Canyon.jpeg" alt="Charyn Canyon" class="destination-img">
-                <h3>Charyn Canyon</h3>
-                <p>Often called the little brother of the Grand Canyon, featuring dramatic red sandstone formations.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Kolsay_Lake.jpeg" alt="Kolsay Lakes" class="destination-img">
-                <h3>Kolsay Lakes</h3>
-                <p>A system of three alpine lakes nestled in the northern Tien Shan mountains, surrounded by pine forests.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/altyn emel.jpg" alt="Altyn Emel" class="destination-img">
-                <h3>Altyn Emel & Singing Dune</h3>
-                <p>A vast national park famous for its massive singing sand dune that produces a deep rumble in dry weather.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/bayanauyl.jpg" alt="Bayanaul" class="destination-img">
-                <h3>Bayanaul Park</h3>
-                <p>A picturesque oasis in the Pavlodar region with bizarre rock formations and crystal-clear lakes.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/karkaraly.jpg" alt="Karkaraly" class="destination-img">
-                <h3>Karkaraly Mountains</h3>
-                <p>Dense mountain forests hiding pure spring lakes and diverse wildlife right in the center of Kazakhstan.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Turgen.jpg" alt="Turgen Gorge" class="destination-img">
-                <h3>Turgen Gorge</h3>
-                <p>A beautiful mountain valley known for its powerful waterfalls, hot springs, and dense coniferous woods.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-
-            <div class="card">
-                <img src="images/Kaindy.jpg" alt="Kaindy Lake" class="destination-img">
-                <h3>Kaindy Sunken Forest</h3>
-                <p>A mountain lake created by an earthquake, famous for dried spruce trunks emerging vertically from turquoise waters.</p>
-                <a href="planner.html" class="card-btn">Plan Trip</a>
-            </div>
-        </div>
-
-        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #e2e8f0;">
-
-        <!-- Галерея на Grid (Взяли 9 разных фото из твоего списка) -->
-        <h2>Photo Gallery Explorer</h2>
-        <div class="gallery-container">
-            <div class="gallery-item">
-                <img src="images/Bektau-Ata.jpeg" alt="Bektau Caves">
-                <div class="gallery-caption">Bektau-Ata Caves</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/Bozzhyra.jpg" alt="Bozzhyra View">
-                <div class="gallery-caption">Bozzhyra Viewpoint</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/Akkergeshen.jpg" alt="White Mountains">
-                <div class="gallery-caption">White Mountains</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/Kaindy.jpg" alt="Kaindy Lake">
-                <div class="gallery-caption">Sunken Forest</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/Turgen.jpg" alt="Turgen Gorge">
-                <div class="gallery-caption">Turgen Waterfall</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/karkaraly.jpg" alt="Karkaraly">
-                <div class="gallery-caption">Karkaraly Woods</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/bayanauyl.jpg" alt="Bayanaul">
-                <div class="gallery-caption">Bayanaul Oasis</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/altyn emel.jpg" alt="Altyn Emel">
-                <div class="gallery-caption">Singing Dune</div>
-            </div>
-            <div class="gallery-item">
-                <img src="images/Kolsay_Lake.jpeg" alt="Kolsay">
-                <div class="gallery-caption">Kolsay Lakes</div>
-            </div>
-        </div>
+<main class="container py-4 py-lg-5">
+  <section class="page-card p-4 p-lg-5 mb-4">
+    <div class="text-center mb-4">
+      <span class="section-label">Bootstrap Carousel</span>
+      <h1 class="mt-3 mb-2">Unexplored Locations of Kazakhstan</h1>
+      <p class="section-intro mb-0">
+        Discover pristine natural monuments, alien-like landscapes and unforgettable places.
+      </p>
     </div>
 
-    <footer class="main-footer">
-        <p>Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
-        <p>Group SE-2502 | Astana IT University &copy; 2026</p>
-    </footer>
+    <div id="kazakhstanCarousel" class="carousel slide carousel-shell" data-bs-ride="carousel">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="5" aria-label="Slide 6"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="6" aria-label="Slide 7"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="7" aria-label="Slide 8"></button>
+<button type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide-to="8" aria-label="Slide 9"></button>
+      </div>
+      <div class="carousel-inner">
+        
+      <div class="carousel-item active">
+        <img src="images/Bektau-Ata.jpeg" class="d-block w-100 carousel-image" alt="Bektau-Ata">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Bektau-Ata</h3>
+          <p class="mb-0">Volcanic oasis in Central Kazakhstan.</p>
+        </div>
+      </div>
 
+      <div class="carousel-item">
+        <img src="images/Bozzhyra.jpg" class="d-block w-100 carousel-image" alt="Bozzhyra">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Bozzhyra</h3>
+          <p class="mb-0">White limestone cliffs of Mangystau.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/Akkergeshen.jpg" class="d-block w-100 carousel-image" alt="Akkergeshen">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Akkergeshen</h3>
+          <p class="mb-0">Ancient white chalk formations.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/Charyn Canyon.jpeg" class="d-block w-100 carousel-image" alt="Charyn Canyon">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Charyn Canyon</h3>
+          <p class="mb-0">Dramatic red sandstone landscape.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/Kolsay_Lake.jpeg" class="d-block w-100 carousel-image" alt="Kolsay Lakes">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Kolsay Lakes</h3>
+          <p class="mb-0">Alpine lakes among pine forests.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/altyn emel.jpg" class="d-block w-100 carousel-image" alt="Altyn Emel">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Altyn Emel</h3>
+          <p class="mb-0">National park and the Singing Dune.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/bayanauyl.jpg" class="d-block w-100 carousel-image" alt="Bayanaul">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Bayanaul</h3>
+          <p class="mb-0">Mountain oasis of Pavlodar Region.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/karkaraly.jpg" class="d-block w-100 carousel-image" alt="Karkaraly">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Karkaraly</h3>
+          <p class="mb-0">Forested mountains of Central Kazakhstan.</p>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <img src="images/Kaindy.jpg" class="d-block w-100 carousel-image" alt="Kaindy Lake">
+        <div class="carousel-caption d-none d-md-block p-3">
+          <h3>Kaindy Lake</h3>
+          <p class="mb-0">Famous sunken spruce forest.</p>
+        </div>
+      </div>
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#kazakhstanCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="page-card p-4 p-lg-5">
+    <div class="text-center mb-4">
+      <span class="section-label">Bootstrap Cards + Grid</span>
+      <h2 class="mt-3 mb-2">Featured Destinations</h2>
+      <p class="section-intro mb-0">
+        Three columns on large screens, two on medium screens and one on mobile.
+      </p>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Bektau-Ata.jpeg" class="destination-img" alt="Bektau-Ata Oasis">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Bektau-Ata Oasis</h3>
+            <p class="card-text">A unique volcanic mountain range rising from the flat Kazakh steppe. Famous for subterranean water caves.</p>
+            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Bozzhyra.jpg" class="destination-img" alt="Bozzhyra Tract">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Bozzhyra Tract</h3>
+            <p class="card-text">A striking white limestone canyon on the Ustyurt Plateau, created by the ancient ocean bed.</p>
+            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Akkergeshen.jpg" class="destination-img" alt="Akkergeshen Plateau">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Akkergeshen Plateau</h3>
+            <p class="card-text">Unique snow-white chalk deposits known for unusually shaped limestone towers and ancient fossils.</p>
+            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Charyn Canyon.jpeg" class="destination-img" alt="Charyn Canyon">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Charyn Canyon</h3>
+            <p class="card-text">Often called the little brother of the Grand Canyon, featuring dramatic red sandstone formations.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Kolsay_Lake.jpeg" class="destination-img" alt="Kolsay Lakes">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Kolsay Lakes</h3>
+            <p class="card-text">A system of three alpine lakes nestled in the northern Tien Shan mountains, surrounded by pine forests.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/altyn emel.jpg" class="destination-img" alt="Altyn Emel & Singing Dune">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Altyn Emel & Singing Dune</h3>
+            <p class="card-text">A vast national park famous for its massive singing sand dune that produces a deep rumble in dry weather.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/bayanauyl.jpg" class="destination-img" alt="Bayanaul Park">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Bayanaul Park</h3>
+            <p class="card-text">A picturesque oasis in the Pavlodar region with bizarre rock formations and crystal-clear lakes.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/karkaraly.jpg" class="destination-img" alt="Karkaraly Mountains">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Karkaraly Mountains</h3>
+            <p class="card-text">Dense mountain forests hiding pure spring lakes and diverse wildlife in Central Kazakhstan.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Turgen.jpg" class="destination-img" alt="Turgen Gorge">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Turgen Gorge</h3>
+            <p class="card-text">A beautiful mountain valley known for powerful waterfalls, hot springs and dense coniferous woods.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <article class="card destination-card">
+          <img src="images/Kaindy.jpg" class="destination-img" alt="Kaindy Sunken Forest">
+          <div class="card-body d-flex flex-column p-4">
+            <h3 class="card-title">Kaindy Sunken Forest</h3>
+            <p class="card-text">A mountain lake created by an earthquake, famous for dried spruce trunks emerging from turquoise waters.</p>
+            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
+          </div>
+        </article>
+      </div>
+    </div>
+
+    <div class="text-center mt-5">
+      <div class="btn-group" role="group" aria-label="Destination actions">
+        <a href="regions.html" class="btn btn-outline-primary btn-lg">View Regions</a>
+        <a href="planner.html" class="btn btn-primary btn-lg">Open Planner</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="main-footer text-center py-4">
+  <div class="container">
+    <p class="mb-1">Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
+    <p class="mb-0">Group SE-2502 | Astana IT University &copy; 2026</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

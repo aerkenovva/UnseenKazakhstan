@@ -1,4 +1,20 @@
-/* --- БАЗОВЫЕ СТИЛИ --- */
+/* =========================================================
+   UNSEEN KAZAKHSTAN — ASSIGNMENT 3
+   CSS Media Queries + Bootstrap 5
+   ========================================================= */
+
+:root {
+    --kz-blue: #00afca;
+    --kz-blue-dark: #078ba3;
+    --kz-gold: #fec107;
+    --kz-dark: #1a252c;
+    --kz-text: #334155;
+    --kz-muted: #64748b;
+    --kz-bg: #eef6f9;
+    --kz-white: #ffffff;
+    --kz-border: #dfe8ec;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -10,182 +26,273 @@ html {
 
 body {
     margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background-color: #f0f7fa;
-    color: #1a252c;
-    line-height: 1.6;
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
-}
-
-h1, h2, h3 {
-    font-family: 'Trebuchet MS', sans-serif;
-    color: #00afca;
-    text-align: center;
-    letter-spacing: 0.5px;
-}
-
-p {
-    font-size: 16px;
-    color: #334155;
-}
-
-/* --- TASK 1: FLEXBOX NAVIGATION --- */
-#main-header {
-    background-color: #00afca;
-    padding: 15px 40px;
-    border-bottom: 4px solid #fec107;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.logo {
-    font-family: 'Trebuchet MS', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
-    color: #ffffff;
-    text-decoration: none;
-}
-
-.logo span {
-    color: #fec107;
-}
-
-.nav-menu {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.nav-menu a {
-    font-family: 'Trebuchet MS', sans-serif;
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
-    transition: color 0.3s ease;
-}
-
-.nav-menu a:hover {
-    color: #fec107;
-}
-
-/* --- TASK 3: PAGE LAYOUT WITH GRID (Для index.html) --- */
-.grid-layout {
-    display: grid;
-    grid-template-areas: "sidebar main";
-    grid-template-columns: 250px 1fr;
-    gap: 20px;
-    padding: 20px;
-    flex: 1;
-}
-
-.sidebar {
-    grid-area: sidebar;
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    border-top: 4px solid #fec107;
-    height: fit-content;
-}
-
-.content-box {
-    grid-area: main;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-    border-top: 4px solid #00afca;
-}
-
-/* Контейнер для остальных страниц */
-.standard-container {
-    width: 90%;
-    max-width: 1200px;
-    margin: 30px auto;
-    background-color: #ffffff;
-    padding: 30px;
-    border-radius: 8px;
-    border-top: 4px solid #00afca;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    flex: 1;
-}
-
-/* --- TASK 2: FLEXBOX CARDS (Для локаций) --- */
-.card-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.card {
     display: flex;
     flex-direction: column;
-    flex: 1 1 300px;
-    background-color: #ffffff;
-    padding: 20px;
-    border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    border-left: 6px solid #fec107;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background-color: var(--kz-bg);
+    color: var(--kz-dark);
+    line-height: 1.6;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+main {
+    flex: 1;
 }
 
-.card h2, .card h3 {
-    margin-top: 0;
+h1,
+h2,
+h3 {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    color: var(--kz-blue-dark);
+    font-weight: 700;
 }
 
-.card-btn {
-    margin-top: auto;
-    padding: 12px;
-    background-color: #00afca;
-    color: white;
-    text-decoration: none;
-    text-align: center;
+p,
+li,
+td,
+th,
+label {
+    color: var(--kz-text);
+}
+
+a {
+    text-underline-offset: 3px;
+}
+
+/* =========================
+   NAVBAR
+   ========================= */
+
+.bg-kz {
+    background-color: var(--kz-blue);
+}
+
+.navbar {
+    border-bottom: 4px solid var(--kz-gold);
+}
+
+.navbar-brand {
+    font-family: "Trebuchet MS", Arial, sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.7px;
+}
+
+.navbar-brand span {
+    color: var(--kz-gold);
+}
+
+.navbar .nav-link {
+    color: #ffffff;
+    font-weight: 700;
     border-radius: 6px;
-    font-weight: bold;
-    transition: background 0.3s;
 }
 
-.card-btn:hover {
-    background-color: #fec107;
-    color: #1a252c;
+.navbar .nav-link:hover,
+.navbar .nav-link:focus,
+.navbar .nav-link.active {
+    color: var(--kz-gold);
+}
+
+/* =========================
+   SHARED SECTIONS
+   ========================= */
+
+.page-card {
+    background-color: var(--kz-white);
+    border: 1px solid var(--kz-border);
+    border-top: 4px solid var(--kz-blue);
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(26, 37, 44, 0.06);
+}
+
+.section-label {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background-color: #e4f6fa;
+    color: var(--kz-blue-dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.section-intro {
+    max-width: 760px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.soft-box {
+    height: 100%;
+    background-color: #f8fcfd;
+    border: 1px solid var(--kz-border);
+    border-radius: 12px;
+}
+
+/* =========================
+   HOME HERO
+   ========================= */
+
+.hero-copy {
+    padding: 8px 0;
+}
+
+.hero-copy h1 {
+    max-width: 700px;
+}
+
+.hero-image-wrap {
+    border: 1px solid var(--kz-border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(26, 37, 44, 0.12);
+    border-bottom: 6px solid var(--kz-gold);
+}
+
+.hero-image {
+    display: block;
+    width: 100%;
+    height: 430px;
+    object-fit: cover;
+}
+
+.mini-stat {
+    border-left: 4px solid var(--kz-gold);
+    background-color: #ffffff;
+    border-radius: 10px;
+    border-top: 1px solid var(--kz-border);
+    border-right: 1px solid var(--kz-border);
+    border-bottom: 1px solid var(--kz-border);
+}
+
+.mini-stat strong {
+    display: block;
+    color: var(--kz-blue-dark);
+    font-size: 1.25rem;
+}
+
+/* =========================
+   TASK 2 — CSS MEDIA QUERY CARDS
+   NO BOOTSTRAP GRID HERE
+   ========================= */
+
+.mq-card-group {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.mq-card {
+    background-color: #ffffff;
+    border: 1px solid var(--kz-border);
+    border-left: 6px solid var(--kz-gold);
+    border-radius: 12px;
+    box-shadow: 0 5px 12px rgba(26, 37, 44, 0.05);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mq-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(26, 37, 44, 0.11);
+}
+
+/* =========================
+   DESTINATION CARDS
+   ========================= */
+
+.destination-card {
+    height: 100%;
+    border: 1px solid var(--kz-border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 14px rgba(26, 37, 44, 0.06);
+    border-bottom: 5px solid var(--kz-gold);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.destination-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(26, 37, 44, 0.12);
 }
 
 .destination-img {
     width: 100%;
-    height: 220px;
+    height: 225px;
     object-fit: cover;
-    border-radius: 8px;
-    margin-bottom: 15px;
 }
 
-/* --- КАРТОЧКИ КОМАНДЫ (Для creators.html) --- */
-.team-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+/* =========================
+   CAROUSEL
+   ========================= */
+
+.carousel-shell {
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 12px 26px rgba(26, 37, 44, 0.14);
+    border: 1px solid var(--kz-border);
+}
+
+.carousel-image {
+    width: 100%;
+    height: 500px;
+    object-fit: cover;
+}
+
+.carousel-caption {
+    background-color: rgba(26, 37, 44, 0.72);
+    border-radius: 10px;
+}
+
+.carousel-caption h3,
+.carousel-caption p {
+    color: #ffffff;
+}
+
+/* =========================
+   REGIONS
+   ========================= */
+
+.region-feature {
+    height: 100%;
     background-color: #ffffff;
-    padding: 30px;
+    border: 1px solid var(--kz-border);
     border-radius: 12px;
-    border: 1px solid #e2e8f0;
-    border-top: 6px solid #fec107;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    flex: 1 1 300px;
-    transition: transform 0.3s ease;
+    border-top: 5px solid var(--kz-gold);
+}
+
+.map-section {
+    min-height: 285px;
+    background-color: #f7fbfc;
+    border: 2px dashed #b9cbd3;
+    border-radius: 12px;
+}
+
+.table-responsive {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 18px rgba(26, 37, 44, 0.08);
+}
+
+.table thead th {
+    background-color: var(--kz-blue);
+    color: #ffffff;
+    border-color: var(--kz-blue);
+}
+
+.table-hover tbody tr:hover > * {
+    --bs-table-accent-bg: #e4f6fa;
+}
+
+/* =========================
+   TEAM
+   ========================= */
+
+.team-card {
+    height: 100%;
+    border: 1px solid var(--kz-border);
+    border-top: 6px solid var(--kz-gold);
+    border-radius: 14px;
+    box-shadow: 0 6px 16px rgba(26, 37, 44, 0.06);
+    transition: transform 0.25s ease;
 }
 
 .team-card:hover {
@@ -193,92 +300,225 @@ p {
 }
 
 .team-avatar {
-    width: 150px;
-    height: 150px;
+    width: 155px;
+    height: 155px;
+    object-fit: cover;
     border-radius: 50%;
-    border: 4px solid #00afca;
-    object-fit: cover;
-    margin-bottom: 15px;
+    border: 4px solid var(--kz-blue);
 }
 
-/* --- TASK 4: IMAGE GALLERY (GRID) --- */
-.gallery-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 250px;
-    gap: 15px;
-    margin-top: 30px;
+.role-tag {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 18px;
+    background-color: #e4f6fa;
+    color: var(--kz-blue-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
 }
 
-.gallery-item {
-    position: relative;
-    overflow: hidden;
-    border-radius: 8px;
-}
+/* =========================
+   TRAVEL TIPS
+   ========================= */
 
-.gallery-item img {
-    width: 100%;
+.tip-card {
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.4s ease;
+    border: 1px solid var(--kz-border);
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(26, 37, 44, 0.06);
+    border-left: 6px solid var(--kz-gold);
 }
 
-.gallery-item:hover img {
-    transform: scale(1.1);
-}
-
-.gallery-caption {
-    position: absolute;
-    bottom: -100%;
-    left: 0;
-    width: 100%;
-    background: rgba(0, 175, 202, 0.9);
-    color: white;
+.tip-number {
+    display: inline-block;
+    min-width: 44px;
+    padding: 8px 10px;
     text-align: center;
-    padding: 15px 10px;
-    transition: bottom 0.3s ease;
-    font-weight: bold;
-}
-
-.gallery-item:hover .gallery-caption {
-    bottom: 0;
-}
-
-/* --- FOOTER --- */
-.main-footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #00afca;
+    border-radius: 8px;
+    background-color: var(--kz-blue);
     color: #ffffff;
-    font-size: 14px;
-    border-top: 4px solid #fec107;
+    font-weight: 800;
+}
+
+/* =========================
+   FORM
+   ========================= */
+
+.form-panel {
+    background-color: #ffffff;
+    border: 1px solid var(--kz-border);
+    border-radius: 14px;
+    box-shadow: 0 8px 20px rgba(26, 37, 44, 0.07);
+}
+
+.form-label,
+.form-check-label {
+    font-weight: 600;
+}
+
+.form-control,
+.form-select,
+.input-group-text {
+    border-color: #cbd8de;
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--kz-blue);
+    box-shadow: 0 0 0 0.25rem rgba(0, 175, 202, 0.18);
+}
+
+.form-check-input:checked {
+    background-color: var(--kz-blue);
+    border-color: var(--kz-blue);
+}
+
+/* =========================
+   BOOTSTRAP BUTTON CUSTOMIZATION
+   ========================= */
+
+.btn-primary {
+    --bs-btn-bg: var(--kz-blue);
+    --bs-btn-border-color: var(--kz-blue);
+    --bs-btn-hover-bg: var(--kz-blue-dark);
+    --bs-btn-hover-border-color: var(--kz-blue-dark);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--kz-blue-dark);
+    --bs-btn-border-color: var(--kz-blue);
+    --bs-btn-hover-bg: var(--kz-blue);
+    --bs-btn-hover-border-color: var(--kz-blue);
+}
+
+/* =========================
+   FOOTER
+   ========================= */
+
+.main-footer {
     margin-top: auto;
+    background-color: var(--kz-blue);
+    border-top: 4px solid var(--kz-gold);
+}
+
+.main-footer p {
+    color: #ffffff;
 }
 
 .main-footer strong {
-    color: #fec107;
+    color: var(--kz-gold);
 }
 
-/* --- АДАПТИВНОСТЬ ДЛЯ ТЕЛЕФОНОВ --- */
-@media (max-width: 768px) {
-    #main-header {
+/* =========================================================
+   TASK 1 — RESPONSIVE TYPOGRAPHY
+   Mobile / Tablet / Desktop
+   ========================================================= */
+
+/* MOBILE */
+@media (max-width: 575.98px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.4rem;
+    }
+
+    h3 {
+        font-size: 1.15rem;
+    }
+
+    p,
+    li,
+    td,
+    th,
+    label {
+        font-size: 0.9rem;
+    }
+
+    .hero-image {
+        height: 250px;
+    }
+
+    .carousel-image {
+        height: 260px;
+    }
+
+    .destination-img {
+        height: 200px;
+    }
+
+    .btn-group {
+        display: flex;
         flex-direction: column;
-        padding: 15px;
-    }
-    
-    .nav-menu {
-        margin-top: 15px;
-        justify-content: center;
+        width: 100%;
     }
 
-    .grid-layout {
-        grid-template-areas:
-            "sidebar"
-            "main";
-        grid-template-columns: 1fr;
+    .btn-group > .btn {
+        border-radius: 6px !important;
+        margin-bottom: 8px;
+    }
+}
+
+/* TABLET */
+@media (min-width: 576px) and (max-width: 991.98px) {
+    h1 {
+        font-size: 2.3rem;
     }
 
-    .gallery-container {
-        grid-template-columns: 1fr;
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    h3 {
+        font-size: 1.35rem;
+    }
+
+    p,
+    li,
+    td,
+    th,
+    label {
+        font-size: 1rem;
+    }
+
+    .mq-card-group {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .hero-image {
+        height: 350px;
+    }
+
+    .carousel-image {
+        height: 380px;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 992px) {
+    h1 {
+        font-size: 2.75rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    h3 {
+        font-size: 1.45rem;
+    }
+
+    p,
+    li,
+    td,
+    th,
+    label {
+        font-size: 1.04rem;
+    }
+
+    .mq-card-group {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
