@@ -544,3 +544,134 @@ a {
         text-align: center;
     }
 }
+
+
+/* =========================================================
+   ASSIGNMENT 4 — JAVASCRIPT COMPONENTS
+   ========================================================= */
+
+.footer-clock {
+    margin-top: 6px;
+    font-size: 0.9rem;
+}
+
+/* Popup subscription form */
+.custom-popup {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgba(26, 37, 44, 0.65);
+    z-index: 2000;
+}
+
+.custom-popup.is-open {
+    display: flex;
+}
+
+.custom-popup-dialog {
+    position: relative;
+    width: min(100%, 480px);
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 28px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    border: 0;
+    background: transparent;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+/* Custom JavaScript accordion */
+.custom-accordion {
+    max-width: 850px;
+    margin: 0 auto;
+}
+
+.accordion-item-custom {
+    margin-bottom: 12px;
+    border: 1px solid var(--kz-border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.accordion-question {
+    width: 100%;
+    border: 0;
+    background: #f8fcfd;
+    padding: 16px 18px;
+    text-align: left;
+    font-weight: 700;
+    color: var(--kz-dark);
+    cursor: pointer;
+}
+
+.accordion-question::after {
+    content: "+";
+    float: right;
+    font-size: 1.25rem;
+}
+
+.accordion-question[aria-expanded="true"]::after {
+    content: "−";
+}
+
+.accordion-answer {
+    max-height: 0;
+    overflow: hidden;
+    padding: 0 18px;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+}
+
+.accordion-answer.is-open {
+    max-height: 220px;
+    padding: 16px 18px;
+}
+
+.accordion-answer p {
+    margin: 0;
+}
+
+/* Form validation */
+.field-error {
+    min-height: 20px;
+    margin-top: 4px;
+    font-size: 0.85rem;
+    color: #b42318;
+}
+
+.form-control.input-error,
+.form-select.input-error {
+    border-color: #b42318;
+}
+
+.form-control.input-success,
+.form-select.input-success {
+    border-color: #198754;
+}
+
+.form-status {
+    min-height: 24px;
+    padding: 10px 12px;
+    border-radius: 8px;
+}
+
+.form-status.success {
+    color: #0f5132;
+    background: #d1e7dd;
+}
+
+.form-status.error {
+    color: #842029;
+    background: #f8d7da;
+}
