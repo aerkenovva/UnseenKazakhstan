@@ -88,9 +88,8 @@ function initPopup() {
       const email = emailInput.value.trim();
 
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      const validEmail = emailPattern.test(email);
 
-      if (!validEmail) {
+      if (!emailPattern.test(email)) {
         message.textContent = "Please enter a valid email address.";
         message.className = "small mb-3 text-danger";
         return;
@@ -216,7 +215,7 @@ function initFormValidation() {
     let isValid = true;
 
 
-    // First name
+    // First Name
     if (!firstName.value.trim()) {
       showError(
         firstName,
@@ -230,7 +229,7 @@ function initFormValidation() {
     }
 
 
-    // Last name
+    // Last Name
     if (!lastName.value.trim()) {
       showError(
         lastName,
@@ -275,7 +274,7 @@ function initFormValidation() {
     }
 
 
-    // Confirm password
+    // Confirm Password
     if (
       !confirmPassword.value ||
       confirmPassword.value !== password.value
@@ -301,13 +300,13 @@ function initFormValidation() {
     }
 
 
-    // Agreement checkbox
+    // Agreement Checkbox
     if (!agreement.checked) {
       isValid = false;
     }
 
 
-    // Final result
+    // Final Result
     if (isValid) {
       status.textContent =
         "Form submitted successfully. Your trip request is ready!";
@@ -318,9 +317,7 @@ function initFormValidation() {
       form.reset();
 
       form
-        .querySelectorAll(
-          ".input-success, .input-error"
-        )
+        .querySelectorAll(".input-success, .input-error")
         .forEach((element) => {
           element.classList.remove(
             "input-success",
@@ -346,8 +343,7 @@ function showError(input, errorId, message) {
   input.classList.add("input-error");
   input.classList.remove("input-success");
 
-  const error =
-    document.getElementById(errorId);
+  const error = document.getElementById(errorId);
 
   if (error) {
     error.textContent = message;
@@ -367,8 +363,7 @@ function clearField(input, errorId) {
     "input-success"
   );
 
-  const error =
-    document.getElementById(errorId);
+  const error = document.getElementById(errorId);
 
   if (error) {
     error.textContent = "";
