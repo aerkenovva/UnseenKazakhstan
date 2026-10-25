@@ -20,6 +20,12 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions & Map</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li>
       </ul>
+      <div class="nav-tools ms-lg-3 mt-3 mt-lg-0">
+        <button id="themeToggleBtn" class="theme-toggle" type="button"
+                aria-label="Switch color theme" aria-pressed="false" title="Switch color theme">☾</button>
+        <button id="soundToggleBtn" class="sound-toggle" type="button"
+                aria-label="Turn site sounds off" aria-pressed="true" title="Site sounds">🔊</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -133,133 +139,58 @@
     </div>
   </section>
 
+  
   <section class="page-card p-4 p-lg-5">
     <div class="text-center mb-4">
-      <span class="section-label">Top Destinations</span>
-      <h2 class="mt-3 mb-2">Featured Destinations</h2>
+      <span class="section-label">Destination Explorer</span>
+      <h2 class="mt-3 mb-2">Find Your Next Hidden Place</h2>
       <p class="section-intro mb-0">
-        Three columns on large screens, two on medium screens and one on mobile.
+        Search by name, filter by landscape and save the places you want to visit.
       </p>
     </div>
 
-    <div class="row g-4">
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Bektau-Ata.jpeg" class="destination-img" alt="Bektau-Ata Oasis">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Bektau-Ata Oasis</h3>
-            <p class="card-text">A unique volcanic mountain range rising from the flat Kazakh steppe. Famous for subterranean water caves.</p>
-            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
-          </div>
-        </article>
+    <div class="destination-toolbar mb-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-sm-12 col-lg-5">
+          <label for="destinationSearch" class="form-label">Search destinations</label>
+          <input id="destinationSearch" class="form-control" type="search"
+                 placeholder="Try Bozzhyra, Kaindy or Kolsay">
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-3">
+          <label for="destinationCategory" class="form-label">Landscape</label>
+          <select id="destinationCategory" class="form-select">
+            <option value="all">All landscapes</option>
+            <option value="mountains">Mountains</option>
+            <option value="lakes">Lakes</option>
+            <option value="canyons">Canyons & cliffs</option>
+            <option value="parks">Parks & valleys</option>
+            <option value="heritage">Heritage</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <label for="destinationSort" class="form-label">Sort</label>
+          <select id="destinationSort" class="form-select">
+            <option value="featured">Featured</option>
+            <option value="name">Name A–Z</option>
+            <option value="rating">Highest rating</option>
+            <option value="favorites">Saved first</option>
+          </select>
+        </div>
       </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Bozzhyra.jpg" class="destination-img" alt="Bozzhyra Tract">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Bozzhyra Tract</h3>
-            <p class="card-text">A striking white limestone canyon on the Ustyurt Plateau, created by the ancient ocean bed.</p>
-            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
-          </div>
-        </article>
+      <div class="destination-toolbar-bottom mt-3">
+        <label class="form-check mb-0">
+          <input id="favoritesOnly" class="form-check-input" type="checkbox">
+          <span class="form-check-label">Show saved places only</span>
+        </label>
+        <button id="clearDestinationFilters" class="btn btn-sm btn-outline-secondary" type="button">Clear filters</button>
       </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Akkergeshen.jpg" class="destination-img" alt="Akkergeshen Plateau">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Akkergeshen Plateau</h3>
-            <p class="card-text">Unique snow-white chalk deposits known for unusually shaped limestone towers and ancient fossils.</p>
-            <a href="planner.html" class="btn btn-primary mt-auto">Plan Trip</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Charyn Canyon.jpeg" class="destination-img" alt="Charyn Canyon">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Charyn Canyon</h3>
-            <p class="card-text">Often called the little brother of the Grand Canyon, featuring dramatic red sandstone formations.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Kolsay_Lake.jpeg" class="destination-img" alt="Kolsay Lakes">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Kolsay Lakes</h3>
-            <p class="card-text">A system of three alpine lakes nestled in the northern Tien Shan mountains, surrounded by pine forests.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/altyn emel.jpg" class="destination-img" alt="Altyn Emel & Singing Dune">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Altyn Emel & Singing Dune</h3>
-            <p class="card-text">A vast national park famous for its massive singing sand dune that produces a deep rumble in dry weather.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/bayanauyl.jpg" class="destination-img" alt="Bayanaul Park">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Bayanaul Park</h3>
-            <p class="card-text">A picturesque oasis in the Pavlodar region with bizarre rock formations and crystal-clear lakes.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/karkaraly.jpg" class="destination-img" alt="Karkaraly Mountains">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Karkaraly Mountains</h3>
-            <p class="card-text">Dense mountain forests hiding pure spring lakes and diverse wildlife in Central Kazakhstan.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Turgen.jpg" class="destination-img" alt="Turgen Gorge">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Turgen Gorge</h3>
-            <p class="card-text">A beautiful mountain valley known for powerful waterfalls, hot springs and dense coniferous woods.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card destination-card">
-          <img src="images/Kaindy.jpg" class="destination-img" alt="Kaindy Sunken Forest">
-          <div class="card-body d-flex flex-column p-4">
-            <h3 class="card-title">Kaindy Sunken Forest</h3>
-            <p class="card-text">A mountain lake created by an earthquake, famous for dried spruce trunks emerging from turquoise waters.</p>
-            <a href="planner.html" class="btn btn-outline-primary mt-auto">Explore</a>
-          </div>
-        </article>
-      </div>
+      <p id="destinationCount" class="destination-count mb-0 mt-3" aria-live="polite"></p>
     </div>
 
-    <div class="text-center mt-5">
-      <div class="btn-group" role="group" aria-label="Destination actions">
-        <a href="regions.html" class="btn btn-outline-primary btn-lg">View Regions</a>
-        <a href="planner.html" class="btn btn-primary btn-lg">Open Planner</a>
-      </div>
+    <div id="destinationGrid" class="row g-4"></div>
+
+    <div id="noDestinations" class="empty-state text-center p-4 mt-4" hidden>
+      No places match your search yet. Try another name or landscape.
     </div>
   </section>
 </main>

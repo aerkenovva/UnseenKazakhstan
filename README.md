@@ -1,45 +1,36 @@
 # Unseen Kazakhstan
 
-Unseen Kazakhstan is a responsive multi-page travel website about hidden and lesser-known destinations in Kazakhstan.
+Unseen Kazakhstan is a responsive travel website focused on lesser-known destinations across Kazakhstan.
 
-## Team
-- Yerkenkyzy Aruzhan
-- Ilyas Samal
-- Saparova Mereilim
+## Pages
 
-Group: SE-2502
+- Home
+- Hidden Gems
+- Regions & Map
+- Team
+- Travel Tips
+- Trip Planner
 
-## Assignment 4
-This version of the project includes JavaScript interactivity.
+## Interactive features
 
-### JavaScript Features
-- Form validation
-- FAQ accordion
-- Popup subscription/contact form
-- Background color change
-- Current date and time display
+The site includes 18 travel destinations, a light/dark theme, a sound control, search, category filters, sorting, saved favorites, destination ratings, expandable details, keyboard navigation, a subscription popup, trip recommendations, form validation and a live date/time display.
 
 ## Technologies
+
 - HTML5
 - CSS3
 - Bootstrap 5
 - JavaScript
-- Git
-- GitHub
-- GitHub Pages
+- DOM manipulation
+- Event handling
 
-## Pages
-- Home — `index.html`
-- Hidden Gems — `destinations.html`
-- Regions & Map — `regions.html`
-- Team — `creators.html`
-- Travel Tips — `tips.html`
-- Trip Planner — `planner.html`
+## Run locally
 
-## Live Website
-https://aerkenovva.github.io/UnseenKazakhstan
+Open `index.html` in a browser, or use a local development server.
 
+## Project team
 
-## Repository
-https://github.com/aerkenovva/UnseenKazakhstan
-
+- Yerkenkyzy Aruzhan
+- Ilyas Samal
+- Saparova Mereilim
+- Group SE-2502

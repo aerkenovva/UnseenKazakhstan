@@ -20,6 +20,12 @@
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions & Map</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="planner.html">Trip Planner</a></li>
       </ul>
+      <div class="nav-tools ms-lg-3 mt-3 mt-lg-0">
+        <button id="themeToggleBtn" class="theme-toggle" type="button"
+                aria-label="Switch color theme" aria-pressed="false" title="Switch color theme">☾</button>
+        <button id="soundToggleBtn" class="sound-toggle" type="button"
+                aria-label="Turn site sounds off" aria-pressed="true" title="Site sounds">🔊</button>
+      </div>
     </div>
   </div>
 </nav>
@@ -31,6 +37,29 @@
       <h1 class="mt-3 mb-2">Plan Your Custom Expedition</h1>
       <p class="section-intro mb-0">
         Fill out the form to create a personalized travel request for your Kazakhstan trip.
+      </p>
+    </div>
+
+
+    <div class="travel-match mb-5">
+      <div class="row g-3 align-items-end">
+        <div class="col-sm-12 col-lg-8">
+          <label for="tripMoodSelect" class="form-label">Not sure where to go?</label>
+          <select id="tripMoodSelect" class="form-select">
+            <option value="nature">Quiet nature and lakes</option>
+            <option value="adventure">Adventure and remote landscapes</option>
+            <option value="photography">Photography and dramatic views</option>
+            <option value="weekend">Easy weekend escape</option>
+            <option value="culture">History and cultural heritage</option>
+            <option value="wildlife">Wildlife and protected nature</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-lg-4 d-grid">
+          <button id="tripSuggestionBtn" class="btn btn-outline-primary" type="button">Suggest a place</button>
+        </div>
+      </div>
+      <p id="tripSuggestionResult" class="travel-match-result mb-0 mt-3" aria-live="polite">
+        Choose a travel style and we will suggest a destination.
       </p>
     </div>
 
@@ -59,8 +88,8 @@
                 <span class="input-group-text" aria-hidden="true">@</span>
                 <input type="email" class="form-control" id="email" name="email"
                        placeholder="name@example.com" required>
-               <div class="field-error" id="emailError"></div>
               </div>
+              <div class="field-error" id="emailError"></div>
             </div>
 
 
@@ -83,23 +112,33 @@
               <label for="people" class="form-label">Number of People</label>
               <input type="number" class="form-control" id="people" name="people"
                      min="1" max="50" value="1" required>
+              <div class="field-error" id="peopleError"></div>
             </div>
 
             <div class="col-sm-12 col-md-6">
               <label for="destination" class="form-label">Preferred Destination</label>
               <select class="form-select" id="destination" name="destination" required>
                 <option value="" selected disabled>Choose a location...</option>
-                <option value="bektau">Bektau-Ata Volcanic Oasis</option>
+                <option value="bektau">Bektau-Ata Mountain Oasis</option>
                 <option value="bozzhyra">Bozzhyra Tract</option>
                 <option value="akkergeshen">Akkergeshen Plateau</option>
                 <option value="charyn">Charyn Canyon</option>
                 <option value="kolsay">Kolsay Lakes</option>
-                <option value="altynemel">Altyn Emel & Singing Dune</option>
+                <option value="altyn-emel">Altyn Emel & Singing Dune</option>
                 <option value="bayanaul">Bayanaul Park</option>
                 <option value="karkaraly">Karkaraly Mountains</option>
                 <option value="turgen">Turgen Gorge</option>
                 <option value="kaindy">Kaindy Sunken Forest</option>
+                <option value="burabay">Burabay National Park</option>
+                <option value="big-almaty">Big Almaty Lake</option>
+                <option value="katon-karagay">Katon-Karagay National Park</option>
+                <option value="tamgaly">Tamgaly Petroglyphs</option>
+                <option value="aksu-zhabagly">Aksu-Zhabagly Nature Reserve</option>
+                <option value="assy">Assy Plateau</option>
+                <option value="markakol">Lake Markakol</option>
+                <option value="sherkala">Sherkala Mountain</option>
               </select>
+              <div class="field-error" id="destinationError"></div>
             </div>
 
             <div class="col-12">
@@ -123,11 +162,18 @@
             </div>
 
             <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="agreement" required>
-                <label class="form-check-label" for="agreement">
-                  I confirm that the entered information is correct.
+              <div id="agreementBox" class="agreement-box">
+                <div class="agreement-box mt-4" id="agreementBox">
+              <div class="form-check d-flex align-items-start gap-3 mb-0">
+                <input class="form-check-input agreement-checkbox" type="checkbox" id="agreement" name="agreement">
+                <label class="form-check-label agreement-label" for="agreement">
+                  <span class="agreement-title">Please confirm before submitting</span>
+                  <span class="agreement-text">I confirm that the entered information is correct.</span>
                 </label>
+              </div>
+              <div class="field-error agreement-error" id="agreementError"></div>
+            </div>
+                <div class="field-error agreement-error" id="agreementError"></div>
               </div>
             </div>
 
