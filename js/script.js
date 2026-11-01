@@ -1,5 +1,6 @@
 let siteSoundEnabled = true;
 let toastTimer;
+const THEME_STORAGE_KEY = "unseenKazakhstanTheme";
 
 const siteSounds = {
   favorite: new Audio("sounds/favorite.wav"),
@@ -12,6 +13,9 @@ siteSounds.favorite.volume = 0.2;
 siteSounds.rating.volume = 0.2;
 siteSounds.success.volume = 0.2;
 siteSounds.click.volume = 0.2;
+
+// Restore the selected theme on every HTML page before the page finishes loading.
+applySavedTheme();
 
 document.addEventListener("DOMContentLoaded", function () {
   updateDateTime();
@@ -109,33 +113,65 @@ function playSiteSound(name) {
 }
 
 function showToast(message) {
-  let toast = document.getElementById("siteToast");
+  // Assignment 6 - Task 7: temporary notification with jQuery fade effects.
+  let $toast = $("#siteToast");
 
-  if (!toast) {
-    toast = document.createElement("div");
-    toast.id = "siteToast";
-    toast.className = "site-toast";
-    toast.setAttribute("role", "status");
-    document.body.appendChild(toast);
+  if ($toast.length === 0) {
+    $toast = $("<div>", {
+      id: "siteToast",
+      class: "site-toast",
+      role: "status",
+      "aria-live": "polite"
+    }).appendTo("body");
   }
 
-  toast.textContent = message;
-  toast.classList.add("is-visible");
-
   clearTimeout(toastTimer);
+  $toast.stop(true, true).text(message).addClass("is-visible").hide().fadeIn(180);
+
   toastTimer = setTimeout(function () {
-    toast.classList.remove("is-visible");
-  }, 2200);
+    $toast.fadeOut(450, function () {
+      $toast.removeClass("is-visible");
+    });
+  }, 1900);
+}
+
+function applySavedTheme() {
+  try {
+    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+
+    if (savedTheme === "dark") {
+      document.body.classList.add("night-theme");
+    } else {
+      document.body.classList.remove("night-theme");
+    }
+  } catch (error) {
+    // If storage is unavailable, the site still works with the default light theme.
+  }
+}
+
+function saveTheme(theme) {
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
+  } catch (error) {
+    // Ignore storage errors so theme switching itself still works.
+  }
 }
 
 function initTheme() {
   const button = document.getElementById("themeToggleBtn");
   if (!button) return;
 
+  // applySavedTheme() already restored the saved choice for this page.
   updateThemeButton(button);
 
   button.addEventListener("click", function () {
     document.body.classList.toggle("night-theme");
+
+    const currentTheme = document.body.classList.contains("night-theme")
+      ? "dark"
+      : "light";
+
+    saveTheme(currentTheme);
     updateThemeButton(button);
     playSiteSound("click");
   });
@@ -356,12 +392,17 @@ function initFormValidation() {
     }
 
     if (isValid) {
-      status.textContent = "Your trip request is ready. We will contact you with the next steps.";
-      status.className = "form-status success";
-      playSiteSound("success");
-      showToast("Trip request submitted successfully");
-      form.reset();
-      clearFormStyles(form, agreementBox, agreementError, false);
+      status.textContent = "Submitting your trip request...";
+      status.className = "form-status";
+
+      runSubmitLoading(form, function () {
+        status.textContent = "Your trip request is ready. We will contact you with the next steps.";
+        status.className = "form-status success";
+        playSiteSound("success");
+        showToast("Trip request submitted successfully");
+        form.reset();
+        clearFormStyles(form, agreementBox, agreementError, false);
+      });
     } else {
       status.textContent = "Please correct the highlighted fields and try again.";
       status.className = "form-status error";
@@ -724,20 +765,25 @@ function initDestinationExplorer() {
       const saved = isFavorite(destination.id);
 
       card.innerHTML = `
-        <img src="${destination.image}" class="destination-img" alt="${destination.name}" loading="lazy">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="${destination.image}" class="destination-img lazy-image" alt="${destination.name}">
         <div class="card-body d-flex flex-column p-4">
           <div class="d-flex justify-content-between gap-3 align-items-start">
             <div>
               <p class="destination-meta mb-1">${destinationHelper.getMeta(destination)}</p>
               <h3 class="card-title">${destination.name}</h3>
             </div>
-            <button class="favorite-btn ${saved ? "is-saved" : ""}"
-                    type="button"
-                    data-favorite="${destination.id}"
-                    aria-pressed="${saved ? "true" : "false"}"
-                    aria-label="${saved ? "Remove from favorites" : "Save to favorites"}">
-              ${saved ? "♥" : "♡"}
-            </button>
+            <div class="card-quick-actions">
+              <button class="copy-place-btn" type="button"
+                      data-copy-text="${destination.name} — ${destination.region}"
+                      aria-label="Copy ${destination.name}" title="Copy destination">⧉</button>
+              <button class="favorite-btn ${saved ? "is-saved" : ""}"
+                      type="button"
+                      data-favorite="${destination.id}"
+                      aria-pressed="${saved ? "true" : "false"}"
+                      aria-label="${saved ? "Remove from favorites" : "Save to favorites"}">
+                ${saved ? "♥" : "♡"}
+              </button>
+            </div>
           </div>
           <p class="card-text">${destination.short}</p>
           <p class="destination-more" data-details="${destination.id}">${destination.details}</p>
@@ -783,6 +829,10 @@ function initDestinationExplorer() {
     count.textContent = filtered.length + " " + placeWord + " found · " + favorites.length + " saved";
 
     emptyState.hidden = filtered.length !== 0;
+
+    // Assignment 6 - Task 3 and Task 9: highlight matches and lazy-load visible images.
+    applySearchHighlight();
+    loadVisibleImages();
 
     grid.querySelectorAll(".read-more-btn").forEach(function (button) {
       button.addEventListener("click", handleReadMore);
@@ -877,7 +927,99 @@ function initDestinationExplorer() {
     }
   }
 
-  search.addEventListener("input", renderDestinations);
+  function updateSearchSuggestions() {
+    const query = $("#destinationSearch").val().trim().toLowerCase();
+    const $suggestions = $("#searchSuggestions");
+
+    if (query.length < 1) {
+      hideSearchSuggestions();
+      return;
+    }
+
+    const matches = destinations.filter(function (destination) {
+      return destination.name.toLowerCase().indexOf(query) !== -1 ||
+             destination.region.toLowerCase().indexOf(query) !== -1;
+    }).slice(0, 5);
+
+    $suggestions.empty();
+
+    if (matches.length === 0) {
+      hideSearchSuggestions();
+      return;
+    }
+
+    matches.forEach(function (destination) {
+      $("<button>", {
+        type: "button",
+        class: "search-suggestion",
+        role: "option",
+        "data-value": destination.name
+      }).append(
+        $("<strong>").text(destination.name),
+        $("<span>").text(destination.region)
+      ).appendTo($suggestions);
+    });
+
+    $suggestions.prop("hidden", false);
+    $("#destinationSearch").attr("aria-expanded", "true");
+  }
+
+  function hideSearchSuggestions() {
+    $("#searchSuggestions").prop("hidden", true).empty();
+    $("#destinationSearch").attr("aria-expanded", "false");
+  }
+
+  function escapeRegExp(value) {
+    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function applySearchHighlight() {
+    const query = $("#destinationSearch").val().trim();
+    if (!query) return;
+
+    const pattern = new RegExp("(" + escapeRegExp(query) + ")", "gi");
+
+    $("#destinationGrid .card-title, #destinationGrid .destination-meta").each(function () {
+      const $element = $(this);
+      const originalText = $element.text();
+      $element.html(originalText.replace(pattern, '<mark class="search-highlight">$1</mark>'));
+    });
+  }
+
+  // Assignment 6 - Task 1: real-time search through a jQuery keyup handler.
+  $("#destinationSearch").on("keyup search", function () {
+    renderDestinations();
+    updateSearchSuggestions();
+  });
+
+  // Assignment 6 - Task 2: choose an autocomplete suggestion.
+  $("#searchSuggestions").on("click", ".search-suggestion", function () {
+    $("#destinationSearch").val($(this).attr("data-value"));
+    hideSearchSuggestions();
+    renderDestinations();
+  });
+
+  $(document).on("click", function (event) {
+    if ($(event.target).closest(".search-autocomplete-wrap").length === 0) {
+      hideSearchSuggestions();
+    }
+  });
+
+  // Assignment 6 - Task 8: copy destination text and confirm the action.
+  $("#destinationGrid").on("click", ".copy-place-btn", function () {
+    const $button = $(this);
+    const textToCopy = $button.attr("data-copy-text");
+
+    copyTextToClipboard(textToCopy, function () {
+      $button.addClass("is-copied").text("✓").attr("title", "Copied to clipboard!");
+      showToast("Copied to clipboard!");
+
+      setTimeout(function () {
+        $button.removeClass("is-copied").text("⧉").attr("title", "Copy destination");
+      }, 1400);
+    });
+  });
+
   category.addEventListener("change", renderDestinations);
   sort.addEventListener("change", renderDestinations);
   favoritesOnly.addEventListener("change", renderDestinations);
@@ -887,9 +1029,119 @@ function initDestinationExplorer() {
     category.value = "all";
     sort.value = "featured";
     favoritesOnly.checked = false;
+    hideSearchSuggestions();
     renderDestinations();
     playSiteSound("click");
   });
 
   renderDestinations();
 }
+
+// ============================================================
+// Assignment 6 - jQuery enhancements
+// ============================================================
+
+$(document).ready(function () {
+  // Task 0: jQuery setup check.
+  console.log("jQuery is ready!");
+
+  initScrollProgress();
+  initAnimatedCounters();
+  initLazyLoading();
+});
+
+// Task 4: colorful scroll progress bar.
+function initScrollProgress() {
+  if ($("#scrollProgress").length === 0) {
+    $("<div>", { id: "scrollProgress", class: "scroll-progress", "aria-hidden": "true" })
+      .append($("<span>"))
+      .prependTo("body");
+  }
+
+  function updateProgress() {
+    const scrollTop = $(window).scrollTop();
+    const scrollable = $(document).height() - $(window).height();
+    const percent = scrollable > 0 ? Math.min(100, Math.max(0, (scrollTop / scrollable) * 100)) : 0;
+    $("#scrollProgress span").css("width", percent + "%");
+  }
+
+  $(window).on("scroll resize", updateProgress);
+  updateProgress();
+}
+
+// Task 5: animated statistics counter on the Home page.
+function initAnimatedCounters() {
+  $(".jquery-counter").each(function () {
+    const $counter = $(this);
+    const target = Number($counter.attr("data-target"));
+
+    $({ value: 0 }).animate({ value: target }, {
+      duration: 1200,
+      easing: "swing",
+      step: function () {
+        $counter.text(Math.floor(this.value));
+      },
+      complete: function () {
+        $counter.text(target);
+      }
+    });
+  });
+}
+
+// Task 6: loading spinner and temporary disabled state on valid form submit.
+function runSubmitLoading(form, onDone) {
+  const $button = $(form).find('button[type="submit"]');
+  const originalHtml = $button.html();
+
+  $button
+    .prop("disabled", true)
+    .html('<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Please wait...');
+
+  setTimeout(function () {
+    $button.prop("disabled", false).html(originalHtml);
+    onDone();
+  }, 1300);
+}
+
+// Task 8 helper: Clipboard API with a safe fallback.
+function copyTextToClipboard(text, onSuccess) {
+  function fallbackCopy() {
+    const $temporary = $("<textarea>")
+      .val(text)
+      .css({ position: "fixed", left: "-9999px", top: "0" })
+      .appendTo("body");
+
+    $temporary[0].select();
+    document.execCommand("copy");
+    $temporary.remove();
+    onSuccess();
+  }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
+    return;
+  }
+
+  fallbackCopy();
+}
+
+// Task 9: jQuery lazy image loading using scroll, offset and attr('src').
+function initLazyLoading() {
+  $(window).on("scroll resize", loadVisibleImages);
+  loadVisibleImages();
+}
+
+function loadVisibleImages() {
+  const viewportBottom = $(window).scrollTop() + $(window).height() + 180;
+
+  $("img.lazy-image[data-src]").each(function () {
+    const $image = $(this);
+    if ($image.offset().top > viewportBottom) return;
+
+    const realSource = $image.attr("data-src");
+    if (!realSource) return;
+
+    $image.attr("src", realSource).removeAttr("data-src").addClass("is-loaded");
+  });
+}
+
