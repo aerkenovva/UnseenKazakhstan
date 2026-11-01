@@ -1144,4 +1144,3 @@ function loadVisibleImages() {
     $image.attr("src", realSource).removeAttr("data-src").addClass("is-loaded");
   });
 }
-
