@@ -1746,3 +1746,155 @@ body.night-theme .small,
 body.night-theme small {
     color: var(--night-muted);
 }
+
+/* ============================================================
+   Endterm final polish
+   Keeps the existing HTML/JavaScript/jQuery functionality intact.
+   ============================================================ */
+
+body:not(.night-theme) {
+    background: linear-gradient(180deg, #eef9fb 0%, #f7fbfc 48%, #edf4f7 100%);
+}
+
+.navbar {
+    box-shadow: 0 7px 20px rgba(8, 82, 101, 0.16);
+}
+
+.navbar .nav-link {
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
+    transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px);
+}
+
+.navbar .nav-link.active {
+    background: rgba(254, 193, 7, 0.14);
+}
+
+.page-card {
+    border-radius: 18px;
+    box-shadow: 0 10px 28px rgba(26, 37, 44, 0.075);
+}
+
+.section-label {
+    border: 1px solid rgba(7, 139, 163, 0.16);
+    letter-spacing: 0.02em;
+}
+
+.hero-image-wrap,
+.carousel-shell {
+    box-shadow: 0 14px 32px rgba(26, 37, 44, 0.13);
+}
+
+.destination-card,
+.mq-card,
+.team-card,
+.tip-card,
+.region-zone,
+.form-panel {
+    transition: transform 0.24s ease, box-shadow 0.24s ease, border-color 0.24s ease;
+}
+
+.destination-card:hover,
+.mq-card:hover,
+.team-card:hover,
+.region-zone:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(26, 37, 44, 0.13);
+}
+
+.destination-card:hover {
+    border-color: #cbdde4;
+}
+
+.destination-toolbar {
+    background: linear-gradient(180deg, #fbfeff 0%, #f2fafc 100%);
+}
+
+.form-control,
+.form-select,
+.input-group-text {
+    border-radius: 10px;
+}
+
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease;
+}
+
+.btn:hover,
+.btn:focus-visible {
+    transform: translateY(-1px);
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible {
+    box-shadow: 0 7px 16px rgba(0, 175, 202, 0.20);
+}
+
+.mini-stat,
+.travel-stats {
+    box-shadow: 0 7px 18px rgba(26, 37, 44, 0.06);
+}
+
+.stat-item strong {
+    text-shadow: 0 2px 10px rgba(0, 175, 202, 0.09);
+}
+
+.main-footer {
+    background: linear-gradient(90deg, #0795ad 0%, var(--kz-blue) 50%, #078ba3 100%);
+    box-shadow: 0 -8px 22px rgba(26, 37, 44, 0.08);
+}
+
+.site-toast {
+    border-left: 5px solid var(--kz-gold);
+}
+
+/* Requested endterm change: a clearer gold scroll progress color. */
+.scroll-progress {
+    height: 5px;
+    background: rgba(254, 193, 7, 0.12);
+}
+
+.scroll-progress span {
+    background: linear-gradient(90deg, #ffd85a 0%, var(--kz-gold) 55%, #efa900 100%);
+    box-shadow: 0 0 12px rgba(254, 193, 7, 0.58);
+}
+
+body.night-theme .destination-toolbar {
+    background: linear-gradient(180deg, #102a36 0%, #0d222c 100%);
+}
+
+body.night-theme .navbar .nav-link:hover,
+body.night-theme .navbar .nav-link:focus {
+    background: rgba(255, 255, 255, 0.09);
+}
+
+body.night-theme .page-card {
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+}
+
+body.night-theme .main-footer {
+    background: linear-gradient(90deg, #083a46 0%, #0a5260 50%, #083a46 100%);
+}
+
+body.night-theme .scroll-progress {
+    background: rgba(254, 193, 7, 0.10);
+}
+
+@media (max-width: 575.98px) {
+    .page-card {
+        border-radius: 14px;
+    }
+
+    .navbar .nav-link {
+        padding-left: 0.55rem;
+        padding-right: 0.55rem;
+    }
+}
