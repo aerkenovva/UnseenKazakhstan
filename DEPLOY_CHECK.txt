@@ -1,0 +1,20 @@
+UNSEEN KAZAKHSTAN — SAFE RESTORE
+
+IMPORTANT: Copy the CONTENTS of this folder into the ROOT of the existing Git repository.
+The repository root must directly contain index.html, destinations.html, login.html, signup.html, profile.html, css/, js/, images/, vendor/.
+
+Before commit, run:
+git rev-parse --show-toplevel
+git status
+git add -A
+git add -f images css js vendor *.html README.md IMAGE_CREDITS.txt .gitignore
+git status
+
+Verify these are tracked:
+git ls-files images/bozzhyra.jpg images/kaindy.jpg images/turgen.jpg images/aruzhan.jpg images/samal.jpg login.html signup.html profile.html
+
+Then:
+git commit -m "Deploy complete final website with all images"
+git push origin main
+
+After GitHub Pages updates, hard refresh: Cmd+Shift+R.
