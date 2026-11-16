@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html data-theme="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Create a local Unseen Kazakhstan travel profile with JavaScript validation." name="description"/><meta content="#0c1821" name="theme-color"/><link href="images/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Unseen Kazakhstan | Sign Up</title>
+<script src="js/theme-init.js"></script>
+<link href="vendor/bootstrap.min.css" rel="stylesheet"/>
+<script src="vendor/jquery.min.js"></script>
+<link href="css/style.css" rel="stylesheet"/>
+</head>
+<body class="page-auth"><a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="scrollProgress"><span></span></div>
+<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top">
+<div class="container">
+<a class="navbar-brand" href="index.html">UNSEEN<span>KAZAKHSTAN</span></a>
+<button aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNavbar" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="mainNavbar">
+<ul class="navbar-nav ms-auto align-items-lg-center"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li></ul>
+<div class="nav-actions d-flex align-items-center gap-2 ms-lg-3">
+<a class="nav-action" href="login.html" id="accountLink">Sign in</a>
+<button aria-label="Turn sounds off" class="theme-toggle sound-toggle" id="soundToggleBtn" title="Sounds on" type="button">♪</button>
+<button aria-label="Switch theme" class="theme-toggle" id="themeToggleBtn" title="Switch theme" type="button">☾</button>
+</div>
+</div>
+</div>
+</nav>
+<main class="site-main" id="mainContent" tabindex="-1">
+<div class="container">
+<div class="row g-4 align-items-stretch">
+<div class="col-lg-6">
+<form class="auth-shell" id="signupForm" novalidate="">
+<span class="eyebrow">Account</span>
+<h1 class="h2">Create your profile</h1>
+<p>Save your details locally in the browser and use them to sign in.</p>
+<div class="signup-avatar-panel mt-3">
+<div class="profile-avatar avatar-preview" id="signupAvatarPreview">U</div>
+<div class="flex-grow-1">
+<label class="form-label d-block mb-1" for="signupAvatarInput">Profile photo <span class="optional-text">optional</span></label>
+<p class="avatar-help mb-2">Add a photo to personalize your travel profile.</p>
+<div class="d-flex flex-wrap gap-2">
+<label class="avatar-upload-btn" for="signupAvatarInput">Choose photo</label>
+<button class="avatar-remove-btn" hidden="" id="signupAvatarRemove" type="button">Remove</button>
+</div>
+<input accept="image/*" class="visually-hidden" id="signupAvatarInput" type="file"/>
+<div class="field-error" id="signupAvatarError"></div>
+</div>
+</div>
+<div class="row g-3 mt-1">
+<div class="col-md-6"><label class="form-label" for="signupName">Full name</label><input aria-describedby="signupNameError" autocomplete="name" class="form-control" id="signupName" placeholder="Your name" type="text"/><div aria-live="polite" class="field-error" id="signupNameError"></div></div>
+<div class="col-md-6"><label class="form-label" for="signupPhone">Phone number</label><input aria-describedby="signupPhoneError" autocomplete="tel" class="form-control" id="signupPhone" inputmode="tel" placeholder="+7 700 000 00 00" type="text"/><div aria-live="polite" class="field-error" id="signupPhoneError"></div></div>
+<div class="col-12"><label class="form-label" for="signupEmail">Email address</label><input aria-describedby="signupEmailError" autocomplete="email" class="form-control" id="signupEmail" inputmode="email" placeholder="name@example.com" spellcheck="false" type="text"/><div aria-live="polite" class="field-error" id="signupEmailError"></div></div>
+<div class="col-md-6"><label class="form-label" for="signupPassword">Password</label><div class="password-field"><input aria-describedby="signupPasswordError" autocomplete="new-password" class="form-control" id="signupPassword" placeholder="Create a password" type="password"/><button aria-label="Show password" class="password-toggle" data-target="signupPassword" title="Show password" type="button"><svg aria-hidden="true" class="eye-show-icon" viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg><svg aria-hidden="true" class="eye-hide-icon" viewBox="0 0 24 24"><path d="M3 3l18 18"></path><path d="M10.6 6.2A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a17.4 17.4 0 0 1-2.3 3.1"></path><path d="M6.1 7.1C3.8 9 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.9-.4 4.1-1"></path></svg></button></div><div class="password-hint mt-1">8+ characters with upper, lower and number.</div><div aria-live="polite" class="password-strength mt-2"><div class="password-strength-track"><span data-score="0" id="passwordStrengthBar"></span></div><div class="password-strength-label"><span>Password strength</span><strong id="passwordStrengthText">Start typing</strong></div></div><div aria-live="polite" class="field-error" id="signupPasswordError"></div></div>
+<div class="col-md-6"><label class="form-label" for="signupConfirm">Confirm password</label><div class="password-field"><input aria-describedby="signupConfirmError" autocomplete="new-password" class="form-control" id="signupConfirm" placeholder="Repeat password" type="password"/><button aria-label="Show password" class="password-toggle" data-target="signupConfirm" title="Show password" type="button"><svg aria-hidden="true" class="eye-show-icon" viewBox="0 0 24 24"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path><circle cx="12" cy="12" r="2.5"></circle></svg><svg aria-hidden="true" class="eye-hide-icon" viewBox="0 0 24 24"><path d="M3 3l18 18"></path><path d="M10.6 6.2A10.7 10.7 0 0 1 12 6c6 0 9.5 6 9.5 6a17.4 17.4 0 0 1-2.3 3.1"></path><path d="M6.1 7.1C3.8 9 2.5 12 2.5 12s3.5 6 9.5 6c1.5 0 2.9-.4 4.1-1"></path></svg></button></div><div aria-live="polite" class="field-error" id="signupConfirmError"></div></div>
+<div class="col-12"><div aria-live="polite" class="form-message" id="signupMessage">Your data is stored only in this browser for the project simulation.</div></div>
+<div class="col-12"><button class="btn-kz w-100" id="signupSubmitBtn" type="submit">Create account</button></div>
+</div>
+<p class="mt-4 mb-0">Already registered? <a href="login.html"><strong>Sign in</strong></a></p>
+</form>
+</div>
+<div class="col-lg-6 d-none d-lg-block">
+<div class="auth-visual h-100"><img alt="Bozzhyra landscape" decoding="async" fetchpriority="high" src="images/bozzhyra.jpg"/><div class="auth-visual-content"><span class="eyebrow">Keep exploring</span><h2>Save ideas for later.</h2><p class="mb-0">Your profile brings together account details, favorite places and your latest trip request.</p></div></div>
+</div>
+</div>
+</div>
+</main>
+<footer class="site-footer">
+<div class="container">
+<div class="row g-3 align-items-center">
+<div class="col-md-5">
+<div class="footer-brand">UNSEEN KAZAKHSTAN</div>
+<div>Travel beyond the obvious.</div>
+</div>
+<div class="col-md-7 text-md-end">
+<div><strong>Yerkenkyzy Aruzhan · Ilyas Samal · Saparova Mereilim</strong></div>
+<div>SE-2502 · Astana IT University · <span class="current-year">2026</span> · <a href="IMAGE_CREDITS.txt">Image credits</a></div>
+</div>
+</div>
+</div>
+</footer>
+<script src="vendor/bootstrap.bundle.min.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

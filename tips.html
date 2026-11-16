@@ -1,120 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html data-theme="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unseen Kazakhstan | Travel Tips</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Practical travel tips for exploring remote landscapes and natural destinations in Kazakhstan." name="description"/><meta content="#0c1821" name="theme-color"/><link href="images/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Unseen Kazakhstan | Travel Tips</title>
+<script src="js/theme-init.js"></script>
+<link href="vendor/bootstrap.min.css" rel="stylesheet"/>
+<script src="vendor/jquery.min.js"></script>
+<link href="css/style.css" rel="stylesheet"/>
 </head>
-<body class="page-tips">
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-kz sticky-top" aria-label="Main navigation">
-  <div class="container">
-    <a class="navbar-brand" href="index.html">UNSEEN <span>KAZAKHSTAN</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions & Map</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li>
-      </ul>
-      <div class="nav-tools ms-lg-3 mt-3 mt-lg-0">
-        <button id="themeToggleBtn" class="theme-toggle" type="button"
-                aria-label="Switch color theme" aria-pressed="false" title="Switch color theme">☾</button>
-        <button id="soundToggleBtn" class="sound-toggle" type="button"
-                aria-label="Turn site sounds off" aria-pressed="true" title="Site sounds">🔊</button>
-      </div>
-    </div>
-  </div>
+<body class="page-tips"><a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="scrollProgress"><span></span></div>
+<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top">
+<div class="container">
+<a class="navbar-brand" href="index.html">UNSEEN<span>KAZAKHSTAN</span></a>
+<button aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNavbar" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="mainNavbar">
+<ul class="navbar-nav ms-auto align-items-lg-center"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions</a></li><li class="nav-item"><a aria-current="page" class="nav-link active" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li><li class="nav-item"><a class="nav-link" href="creators.html">Team</a></li></ul>
+<div class="nav-actions d-flex align-items-center gap-2 ms-lg-3">
+<a class="nav-action" href="login.html" id="accountLink">Sign in</a>
+<button aria-label="Turn sounds off" class="theme-toggle sound-toggle" id="soundToggleBtn" title="Sounds on" type="button">♪</button>
+<button aria-label="Switch theme" class="theme-toggle" id="themeToggleBtn" title="Switch theme" type="button">☾</button>
+</div>
+</div>
+</div>
 </nav>
-
-<main class="container py-4 py-lg-5">
-  <section class="page-card p-4 p-lg-5">
-    <div class="text-center mb-5">
-      <span class="section-label">Travel Smart</span>
-      <h1 class="mt-3 mb-2">Expedition Safety & Travel Tips</h1>
-      <p class="section-intro mb-0">
-        Essential recommendations for travelling off the beaten path across remote Kazakh regions.
-      </p>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <article class="card tip-card">
-          <div class="card-body p-4 p-lg-5">
-            <span class="tip-number mb-3">01</span>
-            <h2>Off-Road Checklist</h2>
-            <ul class="mb-0">
-              <li class="mb-3"><strong>Vehicle:</strong> 4x4 off-road vehicle with spare tires and extra fuel supply.</li>
-              <li class="mb-3"><strong>Navigation:</strong> Offline GPS maps and satellite communicators.</li>
-              <li><strong>Water & Supplies:</strong> Minimum 5 liters of fresh drinking water per person.</li>
-            </ul>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <article class="card tip-card">
-          <div class="card-body p-4 p-lg-5">
-            <span class="tip-number mb-3">02</span>
-            <h2>Eco-Friendly Rules</h2>
-            <ol class="mb-0">
-              <li class="mb-3"><strong>Leave no trace:</strong> Pack out all personal trash and camping gear.</li>
-              <li class="mb-3"><strong>Respect nature:</strong> Do not damage fragile chalk formations or ancient rock art.</li>
-              <li><strong>Camp responsibly:</strong> Use designated fire pits and avoid altering natural habitats.</li>
-            </ol>
-          </div>
-        </article>
-      </div>
-    </div>
-
-
-
-    <div class="mt-5">
-      <div class="text-center mb-4">
-        <span class="section-label">FAQ</span>
-        <h2 class="mt-3">Frequently Asked Questions</h2>
-      </div>
-
-      <div class="custom-accordion" id="travelFaq">
-        <div class="accordion-item-custom">
-          <button class="accordion-question" type="button" aria-expanded="false">What is the best season for remote travel?</button>
-          <div class="accordion-answer"><p>Spring and early autumn are comfortable for many regions, but the best season depends on the destination.</p></div>
-        </div>
-        <div class="accordion-item-custom">
-          <button class="accordion-question" type="button" aria-expanded="false">Do I need a 4x4 vehicle?</button>
-          <div class="accordion-answer"><p>For remote desert, canyon and mountain routes, a reliable 4x4 vehicle is strongly recommended.</p></div>
-        </div>
-        <div class="accordion-item-custom">
-          <button class="accordion-question" type="button" aria-expanded="false">Can I travel without internet access?</button>
-          <div class="accordion-answer"><p>Yes, but download offline maps in advance and keep an emergency communication plan.</p></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="soft-box text-center p-4 p-lg-5 mt-4">
-      <h2>Ready for Your Expedition?</h2>
-      <p>Compare destinations, check the regional directory and create your travel request.</p>
-      <div class="btn-group mt-2" role="group" aria-label="Travel actions">
-        <a href="destinations.html" class="btn btn-outline-primary btn-lg">View Destinations</a>
-        <a href="planner.html" class="btn btn-primary btn-lg">Plan My Trip</a>
-      </div>
-    </div>
-  </section>
+<main class="site-main" id="mainContent" tabindex="-1">
+<div class="container">
+<section class="page-hero">
+<img alt="Turgen Gorge" decoding="async" fetchpriority="high" src="images/turgen.jpg"/>
+<div class="page-hero-content"><span class="eyebrow">Travel smart</span><h1>Simple preparation makes remote travel better.</h1><p>Use practical checklists, respect nature and keep a clear plan when travelling beyond major cities.</p></div>
+</section>
+<section class="section-wrap">
+<div class="row g-4">
+<div class="col-md-4"><article class="tip-card"><img alt="Mountain road" decoding="async" loading="lazy" src="images/karkaraly.jpg"/><span class="tag">Before you go</span><h3 class="mt-3">Route &amp; navigation</h3><p>Download offline maps, tell someone your route and check road conditions before leaving.</p></article></div>
+<div class="col-md-4"><article class="tip-card"><img alt="Remote desert landscape" decoding="async" loading="lazy" src="images/bozzhyra.jpg"/><span class="tag">Remote areas</span><h3 class="mt-3">Water &amp; supplies</h3><p>Carry enough drinking water, food, a charged power bank and basic emergency supplies.</p></article></div>
+<div class="col-md-4"><article class="tip-card"><img alt="National park landscape" decoding="async" loading="lazy" src="images/altyn-emel.jpg"/><span class="tag">Responsible travel</span><h3 class="mt-3">Leave no trace</h3><p>Take your waste with you, protect fragile formations and stay on established routes where possible.</p></article></div>
+</div>
+</section>
+<section class="section-wrap">
+<div class="section-head"><span class="eyebrow">FAQ accordion</span><h2>Common questions before a trip.</h2></div>
+<div class="accordion-list" id="travelFaq">
+<div class="accordion-item-custom"><button aria-expanded="false" class="accordion-question" type="button">What is the best season for remote travel?</button><div class="accordion-answer"><p>Late spring and early autumn are comfortable for many destinations, while mountain lakes are usually best in summer.</p></div></div>
+<div class="accordion-item-custom"><button aria-expanded="false" class="accordion-question" type="button">Do I need a 4x4 vehicle?</button><div class="accordion-answer"><p>For Bozzhyra, remote plateaus and some mountain routes, a reliable 4x4 vehicle is strongly recommended.</p></div></div>
+<div class="accordion-item-custom"><button aria-expanded="false" class="accordion-question" type="button">What if mobile internet disappears?</button><div class="accordion-answer"><p>Prepare offline maps in advance and keep important route information saved on your device.</p></div></div>
+<div class="accordion-item-custom"><button aria-expanded="false" class="accordion-question" type="button">How can I choose a destination quickly?</button><div class="accordion-answer"><p>Use Hidden Gems to search and filter, then open Trip Planner for a simple recommendation and weather check.</p></div></div>
+</div>
+</section>
+<section class="section-wrap">
+<div class="section-card text-center"><span class="eyebrow">Next step</span><h2>Ready to turn inspiration into a route?</h2><p class="mx-auto narrow-copy">Use the planner to get a destination suggestion, check current weather and submit a travel request.</p><a class="btn-kz mt-2" href="planner.html">Open Trip Planner</a></div>
+</section>
+</div>
 </main>
-
-<footer class="main-footer text-center py-4">
-  <div class="container">
-    <p class="mb-1">Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
-    <p class="mb-0">Group SE-2502 | Astana IT University &copy; 2026</p>
-    <p class="mb-0 footer-clock">Current date & time: <span class="current-datetime">Loading...</span></p>
-  </div>
+<footer class="site-footer">
+<div class="container">
+<div class="row g-3 align-items-center">
+<div class="col-md-5">
+<div class="footer-brand">UNSEEN KAZAKHSTAN</div>
+<div>Travel beyond the obvious.</div>
+</div>
+<div class="col-md-7 text-md-end">
+<div><strong>Yerkenkyzy Aruzhan · Ilyas Samal · Saparova Mereilim</strong></div>
+<div>SE-2502 · Astana IT University · <span class="current-year">2026</span> · <a href="IMAGE_CREDITS.txt">Image credits</a></div>
+</div>
+</div>
+</div>
 </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

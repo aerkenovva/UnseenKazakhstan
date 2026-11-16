@@ -1,123 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html data-theme="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unseen Kazakhstan | Project Team</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-4.0.0.min.js"></script>
-  <link rel="stylesheet" href="css/style.css">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Meet the SE-2502 team behind the Unseen Kazakhstan responsive travel website." name="description"/><meta content="#0c1821" name="theme-color"/><link href="images/favicon.svg" rel="icon" type="image/svg+xml"/>
+<title>Unseen Kazakhstan | Team</title>
+<script src="js/theme-init.js"></script>
+<link href="vendor/bootstrap.min.css" rel="stylesheet"/>
+<script src="vendor/jquery.min.js"></script>
+<link href="css/style.css" rel="stylesheet"/>
 </head>
-<body class="page-creators">
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-kz sticky-top" aria-label="Main navigation">
-  <div class="container">
-    <a class="navbar-brand" href="index.html">UNSEEN <span>KAZAKHSTAN</span></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
-            aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions & Map</a></li><li class="nav-item"><a class="nav-link active" aria-current="page" href="creators.html">Team</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li>
-      </ul>
-      <div class="nav-tools ms-lg-3 mt-3 mt-lg-0">
-        <button id="themeToggleBtn" class="theme-toggle" type="button"
-                aria-label="Switch color theme" aria-pressed="false" title="Switch color theme">☾</button>
-        <button id="soundToggleBtn" class="sound-toggle" type="button"
-                aria-label="Turn site sounds off" aria-pressed="true" title="Site sounds">🔊</button>
-      </div>
-    </div>
-  </div>
+<body class="page-team"><a class="skip-link" href="#mainContent">Skip to content</a>
+<div id="scrollProgress"><span></span></div>
+<nav aria-label="Main navigation" class="navbar navbar-expand-lg navbar-dark site-navbar sticky-top">
+<div class="container">
+<a class="navbar-brand" href="index.html">UNSEEN<span>KAZAKHSTAN</span></a>
+<button aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#mainNavbar" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="mainNavbar">
+<ul class="navbar-nav ms-auto align-items-lg-center"><li class="nav-item"><a class="nav-link" href="index.html">Home</a></li><li class="nav-item"><a class="nav-link" href="destinations.html">Hidden Gems</a></li><li class="nav-item"><a class="nav-link" href="regions.html">Regions</a></li><li class="nav-item"><a class="nav-link" href="tips.html">Travel Tips</a></li><li class="nav-item"><a class="nav-link" href="planner.html">Trip Planner</a></li><li class="nav-item"><a aria-current="page" class="nav-link active" href="creators.html">Team</a></li></ul>
+<div class="nav-actions d-flex align-items-center gap-2 ms-lg-3">
+<a class="nav-action" href="login.html" id="accountLink">Sign in</a>
+<button aria-label="Turn sounds off" class="theme-toggle sound-toggle" id="soundToggleBtn" title="Sounds on" type="button">♪</button>
+<button aria-label="Switch theme" class="theme-toggle" id="themeToggleBtn" title="Switch theme" type="button">☾</button>
+</div>
+</div>
+</div>
 </nav>
-
-<main class="container py-4 py-lg-5">
-  <section class="page-card p-4 p-lg-5">
-    <div class="text-center mb-5">
-      <span class="section-label">Our Team</span>
-      <h1 class="mt-3 mb-2">Meet Our Project Team</h1>
-      <p class="section-intro mb-0">
-        Students of Astana IT University developing the Unseen Kazakhstan travel platform.
-      </p>
-    </div>
-
-    <div class="row g-4">
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card team-card text-center">
-          <div class="card-body p-4">
-            <img src="images/aruzhan.JPG" class="team-avatar mb-3" alt="Yerkenkyzy Aruzhan">
-            <h2 class="h4">Yerkenkyzy Aruzhan</h2>
-            <span class="role-tag mb-3">Project Lead & Front-End Developer</span>
-            <p class="mb-0">
-              Responsible for project architecture, Bootstrap navigation,
-              responsive grid and destinations pages.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card team-card text-center">
-          <div class="card-body p-4">
-            <img src="images/samal.JPG" class="team-avatar mb-3" alt="Ilyas Samal">
-            <h2 class="h4">Ilyas Samal</h2>
-            <span class="role-tag mb-3">Data Researcher & Web Designer</span>
-            <p class="mb-0">
-              Responsible for regional information, Bootstrap cards,
-              responsive page structure and visual presentation.
-            </p>
-          </div>
-        </article>
-      </div>
-
-      <div class="col-sm-12 col-md-6 col-lg-4">
-        <article class="card team-card text-center">
-          <div class="card-body p-4">
-            <img src="images/mereilim.jpg" class="team-avatar mb-3" alt="Saparova Mereilim">
-            <h2 class="h4">Saparova Mereilim</h2>
-            <span class="role-tag mb-3">Content Manager & UI Specialist</span>
-            <p class="mb-0">
-              Responsible for Bootstrap forms, buttons, travel safety content
-              and interaction elements.
-            </p>
-          </div>
-        </article>
-      </div>
-    </div>
-
-    <div class="row g-4 mt-2">
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="soft-box p-4">
-          <h3>Shared Workflow</h3>
-          <p class="mb-0">The team uses one GitHub repository and keeps the design consistent across all pages.</p>
-        </div>
-      </div>
-      <div class="col-sm-12 col-md-6 col-lg-6">
-        <div class="soft-box p-4">
-          <h3>Responsive Goal</h3>
-          <p class="mb-0">Every page adapts to mobile, tablet and desktop screens with Bootstrap and media queries.</p>
-        </div>
-      </div>
-    </div>
-    <div class="soft-box text-center p-4 mt-4">
-      <h3>Our Mission</h3>
-      <p class="mb-0">
-        We want to make lesser-known places in Kazakhstan easier to discover,
-        understand and plan for through a simple travel experience.
-      </p>
-    </div>
+<main class="site-main" id="mainContent" tabindex="-1">
+<div class="container">
+<section class="page-hero">
+<img alt="Bayanaul landscape" decoding="async" fetchpriority="high" src="images/bayanaul.jpg"/>
+<div class="page-hero-content"><span class="eyebrow">Team AIM</span><h1>Three students, one travel idea.</h1><p>We built Unseen Kazakhstan as a responsive multi-page project that combines design, JavaScript interaction, jQuery and public API data.</p></div>
 </section>
+<section class="section-wrap">
+<div class="section-head centered"><span class="eyebrow">Creators</span><h2>Meet the project team.</h2><p>Every member contributed to structure, design, content, testing and interactive features.</p></div>
+<div class="row g-4">
+<div class="col-md-4"><article class="team-card text-center"><img alt="Yerkenkyzy Aruzhan" class="team-photo mb-3" decoding="async" loading="lazy" src="images/aruzhan.jpg"/><h3>Yerkenkyzy Aruzhan</h3><div class="team-role mb-2">Front-end &amp; structure</div><p class="mb-0">Worked on responsive layout, navigation, destinations and project organization.</p></article></div>
+<div class="col-md-4"><article class="team-card text-center"><img alt="Ilyas Samal" class="team-photo mb-3" decoding="async" loading="lazy" src="images/samal.jpg"/><h3>Ilyas Samal</h3><div class="team-role mb-2">Design &amp; content</div><p class="mb-0">Worked on visual consistency, regional content, cards and responsive presentation.</p></article></div>
+<div class="col-md-4"><article class="team-card text-center"><img alt="Saparova Mereilim" class="team-photo mb-3" decoding="async" loading="lazy" src="images/mereilim.jpg"/><h3>Saparova Mereilim</h3><div class="team-role mb-2">Interaction &amp; forms</div><p class="mb-0">Worked on forms, validation, travel content and interactive user experience.</p></article></div>
+</div>
+</section>
+<section class="section-wrap">
+<div class="section-card">
+<div class="row g-4 align-items-center"><div class="col-lg-6"><span class="eyebrow">Our goal</span><h2>Make lesser-known Kazakhstan easier to explore.</h2></div><div class="col-lg-6"><p class="mb-0 muted-copy">The site is designed for students, local travelers and visitors who want visual inspiration plus simple tools for choosing a place, checking conditions and preparing a route.</p></div></div>
+</div>
+</section>
+</div>
 </main>
-
-<footer class="main-footer text-center py-4">
-  <div class="container">
-    <p class="mb-1">Project created by: <strong>Yerkenkyzy Aruzhan, Ilyas Samal, Saparova Mereilim</strong></p>
-    <p class="mb-0">Group SE-2502 | Astana IT University &copy; 2026</p>
-    <p class="mb-0 footer-clock">Current date & time: <span class="current-datetime">Loading...</span></p>
-  </div>
+<footer class="site-footer">
+<div class="container">
+<div class="row g-3 align-items-center">
+<div class="col-md-5">
+<div class="footer-brand">UNSEEN KAZAKHSTAN</div>
+<div>Travel beyond the obvious.</div>
+</div>
+<div class="col-md-7 text-md-end">
+<div><strong>Yerkenkyzy Aruzhan · Ilyas Samal · Saparova Mereilim</strong></div>
+<div>SE-2502 · Astana IT University · <span class="current-year">2026</span> · <a href="IMAGE_CREDITS.txt">Image credits</a></div>
+</div>
+</div>
+</div>
 </footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="vendor/bootstrap.bundle.min.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

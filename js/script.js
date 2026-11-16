@@ -1,1083 +1,1205 @@
-let siteSoundEnabled = true;
-let toastTimer;
-const THEME_STORAGE_KEY = "unseenKazakhstanTheme";
-
-const siteSounds = {
-  favorite: new Audio("sounds/favorite.wav"),
-  rating: new Audio("sounds/rating.wav"),
-  success: new Audio("sounds/success.wav"),
-  click: new Audio("sounds/click.wav")
+// ===== Shared data and localStorage keys =====
+const STORAGE = {
+  theme: "ukTheme",
+  user: "ukUser",
+  users: "ukUsers",
+  session: "ukSession",
+  favorites: "ukFavorites",
+  ratings: "ukRatings",
+  search: "ukSearchState",
+  lastTrip: "ukLastTrip",
+  accountCreated: "ukAccountCreated",
+  sound: "ukSound"
 };
 
-siteSounds.favorite.volume = 0.2;
-siteSounds.rating.volume = 0.2;
-siteSounds.success.volume = 0.2;
-siteSounds.click.volume = 0.2;
+const destinations = [
+  { id: "kolsay", name: "Kolsay Lakes", region: "Almaty Region", category: "lakes", image: "images/kolsay-lake.jpg", season: "June–September", description: "A chain of clear alpine lakes surrounded by spruce forest and mountain trails." },
+  { id: "bozzhyra", name: "Bozzhyra", region: "Mangystau Region", category: "canyons", image: "images/bozzhyra.jpg", season: "April–June", description: "White limestone cliffs and wide desert horizons that create one of Kazakhstan's most surreal views." },
+  { id: "charyn", name: "Charyn Canyon", region: "Almaty Region", category: "canyons", image: "images/charyn-canyon.jpg", season: "April–June", description: "Red sandstone formations, deep valleys and a dramatic landscape shaped by wind and water." },
+  { id: "kaindy", name: "Kaindy Lake", region: "Almaty Region", category: "lakes", image: "images/kaindy.jpg", season: "June–September", description: "A mountain lake known for the spruce trunks rising through its cold turquoise water." },
+  { id: "bektau", name: "Bektau-Ata", region: "Karaganda Region", category: "mountains", image: "images/bektau-ata.jpg", season: "May–September", description: "A granite mountain oasis that rises unexpectedly from the open Central Kazakhstan steppe." },
+  { id: "altyn", name: "Altyn Emel", region: "Jetisu Region", category: "parks", image: "images/altyn-emel.jpg", season: "April–June", description: "A national park of dry valleys, colorful mountains and the famous Singing Dune." },
+  { id: "bayanaul", name: "Bayanaul", region: "Pavlodar Region", category: "lakes", image: "images/bayanaul.jpg", season: "June–August", description: "A green mountain-and-lake escape with unusual rock forms and quiet forest routes." },
+  { id: "karkaraly", name: "Karkaraly", region: "Karaganda Region", category: "mountains", image: "images/karkaraly.jpg", season: "May–September", description: "Forested mountain country with lakes, granite ridges and peaceful hiking routes." },
+  { id: "turgen", name: "Turgen Gorge", region: "Almaty Region", category: "parks", image: "images/turgen.jpg", season: "May–October", description: "A green gorge with river scenery, waterfalls and easy access from Almaty." },
+  { id: "akkergeshen", name: "Akkergeshen", region: "Atyrau Region", category: "canyons", image: "images/akkergeshen.jpg", season: "April–June", description: "Ancient chalk formations and open steppe that create a rare white desert landscape." },
+  { id: "big-almaty", name: "Big Almaty Lake", region: "Almaty Region", category: "lakes", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Big_Almaty_Lake_%28Bolshaya_Almatinka%29_in_June.jpg", fallback: "images/kolsay-lake.jpg", season: "June–October", description: "A high-altitude turquoise lake framed by the peaks of the Trans-Ili Alatau." },
+  { id: "issyk", name: "Issyk Lake", region: "Almaty Region", category: "lakes", image: "https://upload.wikimedia.org/wikipedia/commons/0/01/Issyk_lake.jpg", fallback: "images/kaindy.jpg", season: "May–September", description: "An emerald mountain lake near Almaty with forested slopes and a calm alpine setting." },
+  { id: "katon", name: "Katon-Karagay", region: "East Kazakhstan Region", category: "parks", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Katon%20Karagay%201.jpg", fallback: "images/karkaraly.jpg", season: "June–September", description: "Wide Altai valleys, rivers and mountain forests in one of Kazakhstan's largest national parks." },
+  { id: "sairam", name: "Sairam-Ugam", region: "Turkistan Region", category: "mountains", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/%D0%A1%D0%B0%D0%B9%D1%80%D0%B0%D0%BC%20%D1%83%D0%B3%D0%B0%D0%BC.jpg", fallback: "images/turgen.jpg", season: "May–October", description: "Western Tien Shan scenery with green valleys, rivers and dramatic mountain routes." },
+  { id: "ustyurt", name: "Ustyurt Plateau", region: "Mangystau Region", category: "deserts", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ustjurt-plateau%20%286593022525%29.jpg", fallback: "images/bozzhyra.jpg", season: "April–May", description: "A remote limestone plateau of cliffs, open horizons and stark desert landscapes." }
+];
 
-// Restore the selected theme on every HTML page before the page finishes loading.
-applySavedTheme();
+const weatherLocations = {
+  almaty: { label: "Almaty", lat: 43.2389, lon: 76.8897 },
+  aktau: { label: "Aktau", lat: 43.65, lon: 51.15 },
+  karaganda: { label: "Karaganda", lat: 49.806, lon: 73.085 },
+  astana: { label: "Astana", lat: 51.1694, lon: 71.4491 },
+  shymkent: { label: "Shymkent", lat: 42.3155, lon: 69.5869 },
+  oskemen: { label: "Oskemen", lat: 49.9483, lon: 82.6275 }
+};
 
-document.addEventListener("DOMContentLoaded", function () {
-  updateDateTime();
-  setInterval(updateDateTime, 1000);
-  initSoundSettings();
-  initTheme();
-  initKeyboardNavigation();
-  initPopup();
-  initAccordion();
-  initFormValidation();
-  initTripSuggestion();
-  initDestinationExplorer();
-});
+let toastTimer;
 
-function updateDateTime() {
-  const now = new Date();
-  const formatted = now.toLocaleString("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "2-digit",
-    second: "2-digit"
-  });
-
-  document.querySelectorAll(".current-datetime").forEach(function (element) {
-    element.textContent = formatted;
-  });
-}
-
-function initSoundSettings() {
-  const button = document.getElementById("soundToggleBtn");
-  if (!button) return;
-
-  updateSoundButton(button);
-
-  button.addEventListener("click", function () {
-    siteSoundEnabled = !siteSoundEnabled;
-    updateSoundButton(button);
-
-    if (siteSoundEnabled) {
-      playSiteSound("click");
-    }
-  });
-}
-
-function updateSoundButton(button) {
-  if (siteSoundEnabled) {
-    button.textContent = "🔊";
-    button.setAttribute("aria-pressed", "true");
-    button.setAttribute("aria-label", "Turn site sounds off");
-  } else {
-    button.textContent = "🔇";
-    button.setAttribute("aria-pressed", "false");
-    button.setAttribute("aria-label", "Turn site sounds on");
-  }
-}
-
-function stopAllSounds() {
-  siteSounds.favorite.pause();
-  siteSounds.rating.pause();
-  siteSounds.success.pause();
-  siteSounds.click.pause();
-
-  siteSounds.favorite.currentTime = 0;
-  siteSounds.rating.currentTime = 0;
-  siteSounds.success.currentTime = 0;
-  siteSounds.click.currentTime = 0;
+// ===== Optional sound feedback =====
+function soundEnabled() {
+  return localStorage.getItem(STORAGE.sound) !== "off";
 }
 
 function playSiteSound(name) {
-  if (!siteSoundEnabled) return;
+  if (!soundEnabled()) return;
+  const audio = new Audio("sounds/" + name + ".wav");
+  audio.volume = 0.16;
+  audio.play().catch(function () {});
+}
 
-  let sound = null;
+function updateSoundButton() {
+  const button = document.getElementById("soundToggleBtn");
+  if (!button) return;
+  const enabled = soundEnabled();
+  button.textContent = enabled ? "♪" : "×";
+  button.classList.toggle("is-muted", !enabled);
+  button.setAttribute("aria-label", enabled ? "Turn sounds off" : "Turn sounds on");
+  button.title = enabled ? "Sounds on" : "Sounds off";
+}
 
-  switch (name) {
-    case "favorite":
-      sound = siteSounds.favorite;
-      break;
-    case "rating":
-      sound = siteSounds.rating;
-      break;
-    case "success":
-      sound = siteSounds.success;
-      break;
-    case "click":
-      sound = siteSounds.click;
-      break;
+function initSound() {
+  const button = document.getElementById("soundToggleBtn");
+  if (!button) return;
+  updateSoundButton();
+  button.addEventListener("click", function () {
+    const next = soundEnabled() ? "off" : "on";
+    localStorage.setItem(STORAGE.sound, next);
+    updateSoundButton();
+    if (next === "on") playSiteSound("theme");
+  });
+}
+
+// ===== Safe localStorage helpers =====
+function getStoredJSON(key, fallback) {
+  const value = localStorage.getItem(key);
+  if (!value) return fallback;
+  try {
+    return JSON.parse(value);
+  } catch (error) {
+    return fallback;
+  }
+}
+
+function saveJSON(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    console.warn("Unable to save browser data:", error);
+    return false;
+  }
+}
+
+// Scope user-generated data by signed-in email so accounts do not share favorites, ratings, searches or trips.
+function storageScope() {
+  const user = getCurrentUser();
+  return user && user.email ? user.email.toLowerCase() : "guest";
+}
+
+function scopedKey(baseKey) {
+  return baseKey + "::" + storageScope();
+}
+
+// Migrate legacy unscoped data only after a real user signs in; guest visits must not claim another user's data.
+function getScopedJSON(baseKey, fallback) {
+  const scope = storageScope();
+  const key = baseKey + "::" + scope;
+  const stored = getStoredJSON(key, null);
+  if (stored !== null) return stored;
+
+  // Keep legacy data intact for guests. It is migrated only after the
+  // original user signs in, so an anonymous visit cannot "steal" it.
+  const legacy = getStoredJSON(baseKey, null);
+  if (legacy !== null && scope !== "guest") {
+    saveJSON(key, legacy);
+    localStorage.removeItem(baseKey);
+    return legacy;
+  }
+  return fallback;
+}
+
+function saveScopedJSON(baseKey, value) {
+  return saveJSON(scopedKey(baseKey), value);
+}
+
+function normalizePhone(value) {
+  let digits = String(value || "").replace(/\D/g, "");
+  // Kazakhstan users often type the same number as +7... or 8.... Normalize both formats
+  // so duplicate-account checks cannot be bypassed by changing only the prefix.
+  if (digits.length === 11 && digits.startsWith("8")) digits = "7" + digits.slice(1);
+  return digits;
+}
+
+function getUsers() {
+  const users = getStoredJSON(STORAGE.users, []);
+  if (Array.isArray(users) && users.length) return users;
+
+  const legacyUser = getStoredJSON(STORAGE.user, null);
+  if (legacyUser && legacyUser.email) {
+    const migrated = [legacyUser];
+    saveJSON(STORAGE.users, migrated);
+    return migrated;
+  }
+  return [];
+}
+
+function saveUsers(users) {
+  saveJSON(STORAGE.users, users);
+}
+
+function getCurrentUser() {
+  const session = localStorage.getItem(STORAGE.session);
+  if (!session) return null;
+  return getUsers().find(function (user) {
+    return String(user.email || "").toLowerCase() === String(session).toLowerCase();
+  }) || null;
+}
+
+function upsertUser(user) {
+  const users = getUsers();
+  const index = users.findIndex(function (item) {
+    return String(item.email || "").toLowerCase() === String(user.email || "").toLowerCase();
+  });
+  if (index === -1) users.push(user);
+  else users[index] = user;
+  saveUsers(users);
+  saveJSON(STORAGE.user, user);
+}
+
+// ===== Avatar rendering and compression =====
+function setAvatarContent(element, avatar, fallback) {
+  if (!element) return;
+  element.classList.toggle("has-image", Boolean(avatar));
+  element.textContent = "";
+  if (avatar) {
+    const image = document.createElement("img");
+    image.src = avatar;
+    image.alt = "Profile photo";
+    element.appendChild(image);
+  } else {
+    element.textContent = fallback || "U";
+  }
+}
+
+// Resize uploaded avatars in a canvas and convert them to a compact JPEG before storing in localStorage.
+function readAvatarFile(file, onSuccess, onError) {
+  if (!file) return;
+  if (!file.type.startsWith("image/")) {
+    onError("Choose an image file.");
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    onError("Choose an image smaller than 5 MB.");
+    return;
   }
 
-  if (!sound) return;
+  const reader = new FileReader();
+  reader.addEventListener("load", function () {
+    const image = new Image();
+    image.addEventListener("load", function () {
+      const maxSide = 420;
+      const scale = Math.min(1, maxSide / Math.max(image.naturalWidth, image.naturalHeight));
+      const width = Math.max(1, Math.round(image.naturalWidth * scale));
+      const height = Math.max(1, Math.round(image.naturalHeight * scale));
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d");
+      if (!context) {
+        onError("The image could not be prepared.");
+        return;
+      }
+      context.drawImage(image, 0, 0, width, height);
+      onSuccess(canvas.toDataURL("image/jpeg", 0.82));
+    });
+    image.addEventListener("error", function () {
+      onError("The image could not be loaded.");
+    });
+    image.src = reader.result;
+  });
+  reader.addEventListener("error", function () {
+    onError("The image could not be loaded.");
+  });
+  reader.readAsDataURL(file);
+}
 
-  stopAllSounds();
-  sound.play();
+// ===== Password visibility and account navigation =====
+function initPasswordToggles() {
+  document.querySelectorAll(".password-toggle").forEach(function (button) {
+    button.addEventListener("click", function () {
+      const input = document.getElementById(button.getAttribute("data-target"));
+      if (!input) return;
+      const visible = input.type === "text";
+      input.type = visible ? "password" : "text";
+      button.classList.toggle("is-visible", !visible);
+      button.setAttribute("aria-label", visible ? "Show password" : "Hide password");
+      button.title = visible ? "Show password" : "Hide password";
+    });
+  });
 }
 
 function showToast(message) {
-  // Assignment 6 - Task 7: temporary notification with jQuery fade effects.
   let $toast = $("#siteToast");
-
   if ($toast.length === 0) {
-    $toast = $("<div>", {
-      id: "siteToast",
-      class: "site-toast",
-      role: "status",
-      "aria-live": "polite"
-    }).appendTo("body");
+    $toast = $("<div>", { id: "siteToast", class: "site-toast", role: "status", "aria-live": "polite" }).appendTo("body");
   }
-
   clearTimeout(toastTimer);
-  $toast.stop(true, true).text(message).addClass("is-visible").hide().fadeIn(180);
-
+  $toast.stop(true, true).text(message).hide().fadeIn(180);
   toastTimer = setTimeout(function () {
-    $toast.fadeOut(450, function () {
-      $toast.removeClass("is-visible");
-    });
-  }, 1900);
+    $toast.fadeOut(400);
+  }, 1800);
 }
 
-function applySavedTheme() {
-  try {
-    const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
-
-    if (savedTheme === "dark") {
-      document.body.classList.add("night-theme");
-    } else {
-      document.body.classList.remove("night-theme");
-    }
-  } catch (error) {
-    // If storage is unavailable, the site still works with the default light theme.
-  }
-}
-
-function saveTheme(theme) {
-  try {
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
-  } catch (error) {
-    // Ignore storage errors so theme switching itself still works.
-  }
+function updateThemeButton() {
+  const button = document.getElementById("themeToggleBtn");
+  if (!button) return;
+  const dark = document.documentElement.getAttribute("data-theme") === "dark";
+  button.textContent = dark ? "☀" : "☾";
+  button.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
+  button.title = dark ? "Switch to light theme" : "Switch to dark theme";
 }
 
 function initTheme() {
   const button = document.getElementById("themeToggleBtn");
   if (!button) return;
-
-  // applySavedTheme() already restored the saved choice for this page.
-  updateThemeButton(button);
-
+  updateThemeButton();
   button.addEventListener("click", function () {
-    document.body.classList.toggle("night-theme");
-
-    const currentTheme = document.body.classList.contains("night-theme")
-      ? "dark"
-      : "light";
-
-    saveTheme(currentTheme);
-    updateThemeButton(button);
-    playSiteSound("click");
+    const dark = document.documentElement.getAttribute("data-theme") === "dark";
+    const nextTheme = dark ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", nextTheme);
+    localStorage.setItem(STORAGE.theme, nextTheme);
+    updateThemeButton();
+    playSiteSound("theme");
   });
 }
 
-function updateThemeButton(button) {
-  const nightMode = document.body.classList.contains("night-theme");
-
-  if (nightMode) {
-    button.textContent = "☀";
-    button.setAttribute("aria-pressed", "true");
-    button.setAttribute("aria-label", "Switch to light theme");
-    button.title = "Switch to light theme";
+function updateAccountNavigation() {
+  const link = document.getElementById("accountLink");
+  if (!link) return;
+  const user = getCurrentUser();
+  link.textContent = "";
+  if (user) {
+    const firstName = user.name.trim().split(" ")[0] || "Profile";
+    const avatar = document.createElement("span");
+    avatar.className = "nav-account-avatar";
+    setAvatarContent(avatar, user.avatar || "", firstName.charAt(0).toUpperCase());
+    const name = document.createElement("span");
+    name.textContent = firstName;
+    link.append(avatar, name);
+    link.href = "profile.html";
   } else {
-    button.textContent = "☾";
-    button.setAttribute("aria-pressed", "false");
-    button.setAttribute("aria-label", "Switch to dark theme");
-    button.title = "Switch to dark theme";
+    link.textContent = "Sign in";
+    link.href = "login.html";
   }
 }
 
-function initKeyboardNavigation() {
-  const links = document.querySelectorAll(".navbar .nav-link");
-  if (links.length === 0) return;
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
-
-    let currentIndex = -1;
-
-    for (let i = 0; i < links.length; i++) {
-      if (links[i] === document.activeElement) {
-        currentIndex = i;
-      }
-    }
-
-    if (currentIndex === -1) return;
-
-    event.preventDefault();
-
-    if (event.key === "ArrowRight") {
-      currentIndex++;
-      if (currentIndex === links.length) currentIndex = 0;
-    } else {
-      currentIndex--;
-      if (currentIndex < 0) currentIndex = links.length - 1;
-    }
-
-    links[currentIndex].focus();
+function updateYear() {
+  document.querySelectorAll(".current-year").forEach(function (element) {
+    element.textContent = new Date().getFullYear();
   });
-}
-
-function initPopup() {
-  const popup = document.getElementById("subscriptionPopup");
-  const openBtn = document.getElementById("openPopupBtn");
-  const closeBtn = document.getElementById("closePopupBtn");
-  const form = document.getElementById("subscriptionForm");
-  const emailInput = document.getElementById("subscriberEmail");
-  const message = document.getElementById("subscriptionMessage");
-
-  if (!popup || !openBtn || !closeBtn) return;
-
-  function openPopup() {
-    popup.classList.add("is-open");
-    popup.setAttribute("aria-hidden", "false");
-
-    if (emailInput) {
-      emailInput.focus();
-    }
-  }
-
-  function closePopup() {
-    popup.classList.remove("is-open");
-    popup.setAttribute("aria-hidden", "true");
-  }
-
-  openBtn.addEventListener("click", openPopup);
-  closeBtn.addEventListener("click", closePopup);
-
-  popup.addEventListener("click", function (event) {
-    if (event.target === popup) {
-      closePopup();
-    }
-  });
-
-  document.addEventListener("keydown", function (event) {
-    if (event.key === "Escape" && popup.classList.contains("is-open")) {
-      closePopup();
-    }
-  });
-
-  if (form && emailInput && message) {
-    form.addEventListener("submit", function (event) {
-      event.preventDefault();
-
-      const email = emailInput.value.trim();
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!emailPattern.test(email)) {
-        message.textContent = "Please enter a valid email address.";
-        message.className = "small mb-3 text-danger";
-        return;
-      }
-
-      message.textContent = "Thank you! You are subscribed.";
-      message.className = "small mb-3 text-success";
-      playSiteSound("success");
-      showToast("Subscription confirmed");
-      form.reset();
-    });
-  }
 }
 
 function initAccordion() {
-  const questions = document.querySelectorAll(".accordion-question");
-
-  questions.forEach(function (button) {
+  document.querySelectorAll(".accordion-question").forEach(function (button) {
     button.addEventListener("click", function () {
       const answer = button.nextElementSibling;
       if (!answer) return;
-
-      const isOpen = button.getAttribute("aria-expanded") === "true";
-      button.setAttribute("aria-expanded", String(!isOpen));
-      answer.classList.toggle("is-open", !isOpen);
+      const open = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!open));
+      answer.classList.toggle("is-open", !open);
     });
   });
-}
-
-function initFormValidation() {
-  const form = document.getElementById("tripForm");
-  if (!form) return;
-
-  const status = document.getElementById("formStatus");
-  const firstName = document.getElementById("firstname");
-  const lastName = document.getElementById("lastname");
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  const confirmPassword = document.getElementById("confirmPassword");
-  const destination = document.getElementById("destination");
-  const people = document.getElementById("people");
-  const agreement = document.getElementById("agreement");
-  const agreementBox = document.getElementById("agreementBox");
-  const agreementError = document.getElementById("agreementError");
-  const resetButton = form.querySelector('button[type="reset"]');
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    clearField(firstName, "firstnameError");
-    clearField(lastName, "lastnameError");
-    clearField(email, "emailError");
-    clearField(password, "passwordError");
-    clearField(confirmPassword, "confirmPasswordError");
-    clearField(people, "peopleError");
-    clearField(destination, "destinationError");
-    agreementBox.classList.remove("agreement-invalid");
-    agreementError.textContent = "";
-
-    let isValid = true;
-
-    if (!firstName.value.trim()) {
-      showError(firstName, "firstnameError", "First name is required.");
-      isValid = false;
-    } else {
-      showSuccess(firstName);
-    }
-
-    if (!lastName.value.trim()) {
-      showError(lastName, "lastnameError", "Last name is required.");
-      isValid = false;
-    } else {
-      showSuccess(lastName);
-    }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailPattern.test(email.value.trim())) {
-      showError(email, "emailError", "Enter a valid email address.");
-      isValid = false;
-    } else {
-      showSuccess(email);
-    }
-
-    if (password.value.length < 6) {
-      showError(password, "passwordError", "Password must be at least 6 characters.");
-      isValid = false;
-    } else {
-      showSuccess(password);
-    }
-
-    if (!confirmPassword.value || confirmPassword.value !== password.value) {
-      showError(confirmPassword, "confirmPasswordError", "Passwords must match.");
-      isValid = false;
-    } else {
-      showSuccess(confirmPassword);
-    }
-
-    const peopleCount = Number(people.value);
-
-    if (!people.value || peopleCount < 1 || peopleCount > 50) {
-      showError(people, "peopleError", "Enter a number from 1 to 50.");
-      isValid = false;
-    } else {
-      showSuccess(people);
-    }
-
-    if (!destination.value) {
-      showError(destination, "destinationError", "Please choose a destination.");
-      isValid = false;
-    } else {
-      showSuccess(destination);
-    }
-
-    if (!agreement.checked) {
-      agreementBox.classList.add("agreement-invalid");
-      agreementError.textContent = "Please confirm this before submitting.";
-      isValid = false;
-    }
-
-    if (isValid) {
-      status.textContent = "Submitting your trip request...";
-      status.className = "form-status";
-
-      runSubmitLoading(form, function () {
-        status.textContent = "Your trip request is ready. We will contact you with the next steps.";
-        status.className = "form-status success";
-        playSiteSound("success");
-        showToast("Trip request submitted successfully");
-        form.reset();
-        clearFormStyles(form, agreementBox, agreementError, false);
-      });
-    } else {
-      status.textContent = "Please correct the highlighted fields and try again.";
-      status.className = "form-status error";
-    }
-  });
-
-  if (resetButton) {
-    resetButton.addEventListener("click", function () {
-      setTimeout(function () {
-        clearFormStyles(form, agreementBox, agreementError, true);
-      }, 0);
-    });
-  }
-
-  agreement.addEventListener("change", function () {
-    if (agreement.checked) {
-      agreementBox.classList.remove("agreement-invalid");
-      agreementError.textContent = "";
-    }
-  });
-}
-
-function clearFormStyles(form, agreementBox, agreementError, clearStatus) {
-  form.querySelectorAll(".input-success, .input-error").forEach(function (element) {
-    element.classList.remove("input-success", "input-error");
-  });
-
-  form.querySelectorAll(".field-error").forEach(function (error) {
-    error.textContent = "";
-  });
-
-  agreementBox.classList.remove("agreement-invalid");
-  agreementError.textContent = "";
-
-  if (clearStatus) {
-    const status = document.getElementById("formStatus");
-    status.textContent = "";
-    status.className = "form-status";
-  }
-}
-
-function showError(input, errorId, message) {
-  input.classList.add("input-error");
-  input.classList.remove("input-success");
-
-  const error = document.getElementById(errorId);
-  if (error) {
-    error.textContent = message;
-  }
-}
-
-function showSuccess(input) {
-  input.classList.remove("input-error");
-  input.classList.add("input-success");
-}
-
-function clearField(input, errorId) {
-  input.classList.remove("input-error", "input-success");
-
-  const error = document.getElementById(errorId);
-  if (error) {
-    error.textContent = "";
-  }
 }
 
 function initTripSuggestion() {
-  const select = document.getElementById("tripMoodSelect");
   const button = document.getElementById("tripSuggestionBtn");
+  const select = document.getElementById("tripMoodSelect");
   const result = document.getElementById("tripSuggestionResult");
+  const destinationSelect = document.getElementById("tripDestination");
+  if (!button || !select || !result) return;
 
-  if (!select || !button || !result) return;
+  // Each travel style has several matching destinations. The previous result
+  // is excluded so repeated clicks do not immediately return the same place.
+  const suggestionPools = {
+    nature: [
+      { name: "Kolsay Lakes", reason: "quiet mountain lakes and forest scenery" },
+      { name: "Kaindy Lake", reason: "a peaceful alpine lake with its famous submerged forest" },
+      { name: "Big Almaty Lake", reason: "high-altitude views close to Almaty" },
+      { name: "Issyk Lake", reason: "an easy lake escape surrounded by mountains" },
+      { name: "Bayanaul", reason: "lakes, pine forest and relaxed nature trails" }
+    ],
+    adventure: [
+      { name: "Bozzhyra", reason: "remote desert landscapes and dramatic cliffs" },
+      { name: "Ustyurt Plateau", reason: "wide-open desert terrain and expedition atmosphere" },
+      { name: "Bektau-Ata", reason: "rock formations, hiking and unusual mountain scenery" },
+      { name: "Sairam-Ugam", reason: "mountain routes and a more active outdoor trip" },
+      { name: "Akkergeshen", reason: "remote chalk landscapes far from typical tourist routes" }
+    ],
+    photography: [
+      { name: "Charyn Canyon", reason: "strong shapes, warm colors and dramatic canyon light" },
+      { name: "Bozzhyra", reason: "cinematic cliffs and minimalist desert compositions" },
+      { name: "Kaindy Lake", reason: "one of Kazakhstan's most unusual lake scenes" },
+      { name: "Altyn Emel", reason: "contrasting dunes, mountains and open landscapes" },
+      { name: "Ustyurt Plateau", reason: "huge horizons and striking geological forms" }
+    ],
+    weekend: [
+      { name: "Turgen Gorge", reason: "a convenient nature escape from Almaty" },
+      { name: "Issyk Lake", reason: "an easy day or weekend route with mountain views" },
+      { name: "Big Almaty Lake", reason: "a short scenic trip near the city" },
+      { name: "Bayanaul", reason: "a relaxed weekend with lakes and forest" },
+      { name: "Karkaraly", reason: "forest, mountains and manageable weekend routes" }
+    ],
+    culture: [
+      { name: "Bektau-Ata", reason: "a landscape surrounded by local legends and stories" },
+      { name: "Karkaraly", reason: "a place combining nature with regional history" },
+      { name: "Sairam-Ugam", reason: "southern Kazakhstan landscapes close to historic cultural routes" },
+      { name: "Altyn Emel", reason: "natural landmarks connected with history and local heritage" }
+    ]
+  };
+
+  let lastSuggestion = "";
 
   button.addEventListener("click", function () {
-    let suggestion = "";
+    const candidates = suggestionPools[select.value] || suggestionPools.nature;
+    const available = candidates.filter(function (item) {
+      return item.name !== lastSuggestion;
+    });
+    const pool = available.length ? available : candidates;
+    const selected = pool[Math.floor(Math.random() * pool.length)];
 
-    switch (select.value) {
-      case "nature":
-        suggestion = "Kolsay Lakes — alpine scenery, pine forests and a calm atmosphere.";
-        break;
-      case "adventure":
-        suggestion = "Bozzhyra — a remote Mangystau landscape made for a real expedition.";
-        break;
-      case "photography":
-        suggestion = "Charyn Canyon — dramatic rock formations and strong sunset views.";
-        break;
-      case "weekend":
-        suggestion = "Bektau-Ata — a memorable Central Kazakhstan escape with unusual rock scenery.";
-        break;
-      case "culture":
-        suggestion = "Tamgaly — an archaeological landscape with ancient petroglyphs and open steppe scenery.";
-        break;
-      case "wildlife":
-        suggestion = "Aksu-Zhabagly — a protected Western Tien Shan landscape for nature-focused travel.";
-        break;
-      default:
-        suggestion = "Explore our Hidden Gems page to compare destinations.";
-    }
-
-    result.textContent = suggestion;
+    lastSuggestion = selected.name;
+    result.textContent = "Recommended: " + selected.name + " — " + selected.reason + ".";
+    result.className = "form-message success mt-3";
+    if (destinationSelect) destinationSelect.value = selected.name;
+    button.textContent = "Suggest another place";
+    showToast("Recommendation ready");
     playSiteSound("click");
   });
 }
 
-function initDestinationExplorer() {
-  const grid = document.getElementById("destinationGrid");
+function weatherDescription(code) {
+  if (code === 0) return "Clear sky";
+  if (code === 1 || code === 2 || code === 3) return "Partly cloudy";
+  if (code === 45 || code === 48) return "Foggy";
+  if (code >= 51 && code <= 67) return "Rainy";
+  if (code >= 71 && code <= 77) return "Snowy";
+  if (code >= 80 && code <= 82) return "Rain showers";
+  if (code >= 95) return "Thunderstorm";
+  return "Mixed conditions";
+}
+
+// ===== External weather API: loading, timeout, success and error states =====
+async function loadWeather() {
+  const select = document.getElementById("weatherCity");
+  const button = document.getElementById("weatherBtn");
+  const result = document.getElementById("weatherResult");
+  if (!select || !button || !result) return;
+
+  const place = weatherLocations[select.value];
+  if (!place) return;
+
+  const originalText = button.textContent;
+  playSiteSound("click");
+  button.disabled = true;
+  button.innerHTML = '<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> Loading...';
+  result.innerHTML = '<div class="form-message">Loading current weather...</div>';
+
+  let timeout;
+  try {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=" + place.lat + "&longitude=" + place.lon + "&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m&timezone=auto";
+    const controller = new AbortController();
+    timeout = setTimeout(function () { controller.abort(); }, 8000);
+    const response = await fetch(url, { signal: controller.signal });
+    if (!response.ok) throw new Error("Weather request failed");
+    const data = await response.json();
+    const current = data.current;
+    if (!current) throw new Error("Weather data missing");
+    const updated = current.time ? current.time.replace("T", " ") : "now";
+    result.innerHTML = '<div class="weather-main"><div><div class="destination-meta">' + place.label + '</div><div class="weather-temp">' + Math.round(current.temperature_2m) + '°C</div></div><span class="tag">' + weatherDescription(current.weather_code) + '</span></div><div class="weather-meta"><div><strong>Feels like</strong><br>' + Math.round(current.apparent_temperature) + '°C</div><div><strong>Wind</strong><br>' + Math.round(current.wind_speed_10m) + ' km/h</div></div><div class="destination-meta mt-3">Updated ' + updated + ' · Open-Meteo public API</div>';
+  } catch (error) {
+    result.innerHTML = '<div class="form-message error">Weather data is unavailable right now. Please try again.</div>';
+    playSiteSound("error");
+  } finally {
+    if (timeout) clearTimeout(timeout);
+    button.disabled = false;
+    button.textContent = originalText;
+  }
+}
+
+function initWeather() {
+  const button = document.getElementById("weatherBtn");
+  if (button) button.addEventListener("click", loadWeather);
+}
+
+function clearFieldState(input, errorId) {
+  if (!input) return;
+  input.classList.remove("input-error", "input-success");
+  input.removeAttribute("aria-invalid");
+  const error = document.getElementById(errorId);
+  if (error) {
+    error.textContent = "";
+    error.removeAttribute("role");
+  }
+}
+
+function focusFirstInvalid(form) {
+  const first = form ? form.querySelector(".input-error") : null;
+  if (first) first.focus();
+}
+
+function markInvalid(input, errorId, message) {
+  if (input) {
+    input.classList.remove("input-success");
+    input.classList.add("input-error");
+    input.setAttribute("aria-invalid", "true");
+  }
+  const error = document.getElementById(errorId);
+  if (error) {
+    error.textContent = message;
+    error.setAttribute("role", "alert");
+  }
+}
+
+function markValid(input) {
+  if (!input) return;
+  input.classList.remove("input-error");
+  input.classList.add("input-success");
+  input.setAttribute("aria-invalid", "false");
+}
+
+// ===== Shared form-validation helpers =====
+function validName(value) {
+  const cleaned = value.trim();
+  return cleaned.length >= 2 && /\p{L}/u.test(cleaned);
+}
+
+function validEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
+}
+
+function validPhone(value) {
+  const cleaned = value.trim();
+  if (!/^\+?[0-9()\s-]+$/.test(cleaned)) return false;
+  const digits = normalizePhone(cleaned);
+  return digits.length >= 10 && digits.length <= 15;
+}
+
+function validPassword(value) {
+  return value.length >= 8 && /[A-Z]/.test(value) && /[a-z]/.test(value) && /[0-9]/.test(value);
+}
+
+function initPasswordStrength() {
+  const input = document.getElementById("signupPassword");
+  const meter = document.getElementById("passwordStrengthBar");
+  const label = document.getElementById("passwordStrengthText");
+  if (!input || !meter || !label) return;
+
+  function update() {
+    const value = input.value;
+    let score = 0;
+    if (value.length >= 8) score += 1;
+    if (/[a-z]/.test(value)) score += 1;
+    if (/[A-Z]/.test(value)) score += 1;
+    if (/[0-9]/.test(value)) score += 1;
+    if (/[^A-Za-z0-9]/.test(value)) score += 1;
+    const labels = ["Start typing", "Weak", "Fair", "Good", "Strong", "Excellent"];
+    meter.style.width = (score * 20) + "%";
+    meter.dataset.score = String(score);
+    label.textContent = labels[score];
+  }
+
+  input.addEventListener("input", update);
+  update();
+}
+
+function runLoadingButton(button, message, onDone) {
+  if (!button) {
+    onDone();
+    return;
+  }
+  const $button = $(button);
+  const original = $button.html();
+  $button.prop("disabled", true).html('<span class="spinner-border spinner-border-sm" aria-hidden="true"></span> ' + message);
+  setTimeout(function () {
+    $button.prop("disabled", false).html(original);
+    onDone();
+  }, 700);
+}
+
+function bindLiveFieldReset(form) {
+  if (!form) return;
+
+  function clearLiveError(event) {
+    const input = event.target;
+    if (!input || !input.classList) return;
+    input.classList.remove("input-error");
+    input.removeAttribute("aria-invalid");
+
+    const describedBy = (input.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+    describedBy.forEach(function (id) {
+      const error = document.getElementById(id);
+      if (error && error.classList.contains("field-error")) {
+        error.textContent = "";
+        error.removeAttribute("role");
+      }
+    });
+  }
+
+  form.addEventListener("input", clearLiveError);
+  form.addEventListener("change", clearLiveError);
+}
+
+// ===== Sign Up / Sign In / Profile authentication simulation =====
+function initSignup() {
+  const form = document.getElementById("signupForm");
+  if (!form) return;
+  const name = document.getElementById("signupName");
+  const phone = document.getElementById("signupPhone");
+  const email = document.getElementById("signupEmail");
+  const password = document.getElementById("signupPassword");
+  const confirm = document.getElementById("signupConfirm");
+  const message = document.getElementById("signupMessage");
+  const button = document.getElementById("signupSubmitBtn");
+  const avatarInput = document.getElementById("signupAvatarInput");
+  const avatarPreview = document.getElementById("signupAvatarPreview");
+  const avatarRemove = document.getElementById("signupAvatarRemove");
+  const avatarError = document.getElementById("signupAvatarError");
+  let avatarData = "";
+  bindLiveFieldReset(form);
+
+  if (avatarInput) {
+    avatarInput.addEventListener("change", function () {
+      const file = avatarInput.files[0];
+      if (!file) return;
+      readAvatarFile(file, function (value) {
+        avatarData = value;
+        setAvatarContent(avatarPreview, avatarData, "U");
+        avatarRemove.hidden = false;
+        avatarError.textContent = "";
+      }, function (error) {
+        avatarInput.value = "";
+        avatarError.textContent = error;
+        playSiteSound("error");
+      });
+    });
+  }
+
+  if (avatarRemove) {
+    avatarRemove.addEventListener("click", function () {
+      avatarData = "";
+      avatarInput.value = "";
+      avatarRemove.hidden = true;
+      avatarError.textContent = "";
+      setAvatarContent(avatarPreview, "", "U");
+    });
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    clearFieldState(name, "signupNameError");
+    clearFieldState(phone, "signupPhoneError");
+    clearFieldState(email, "signupEmailError");
+    clearFieldState(password, "signupPasswordError");
+    clearFieldState(confirm, "signupConfirmError");
+    let ok = true;
+
+    if (!validName(name.value)) {
+      markInvalid(name, "signupNameError", "Enter your full name (at least 2 characters).");
+      ok = false;
+    } else markValid(name);
+
+    if (!validPhone(phone.value.trim())) {
+      markInvalid(phone, "signupPhoneError", "Enter a valid phone number.");
+      ok = false;
+    } else markValid(phone);
+
+    if (!validEmail(email.value.trim())) {
+      markInvalid(email, "signupEmailError", "Enter a valid email address.");
+      ok = false;
+    } else markValid(email);
+
+    if (!validPassword(password.value)) {
+      markInvalid(password, "signupPasswordError", "Use 8+ characters with upper, lower and a number.");
+      ok = false;
+    } else markValid(password);
+
+    if (!confirm.value || confirm.value !== password.value) {
+      markInvalid(confirm, "signupConfirmError", "Passwords must match.");
+      ok = false;
+    } else markValid(confirm);
+
+    if (!ok) {
+      message.textContent = "Please correct the highlighted fields.";
+      message.className = "form-message error";
+      playSiteSound("error");
+      focusFirstInvalid(form);
+      return;
+    }
+
+    const normalizedEmail = email.value.trim().toLowerCase();
+    const normalizedPhone = normalizePhone(phone.value);
+    const users = getUsers();
+    const emailExists = users.some(function (user) { return String(user.email || "").toLowerCase() === normalizedEmail; });
+    const phoneExists = users.some(function (user) { return normalizePhone(user.phone) === normalizedPhone; });
+
+    if (emailExists || phoneExists) {
+      if (emailExists) markInvalid(email, "signupEmailError", "An account with this email already exists.");
+      if (phoneExists) markInvalid(phone, "signupPhoneError", "An account with this phone number already exists.");
+      message.textContent = "This account already exists. Please sign in instead.";
+      message.className = "form-message error";
+      playSiteSound("error");
+      return;
+    }
+
+    const user = { name: name.value.trim(), phone: phone.value.trim(), email: normalizedEmail, password: password.value, avatar: avatarData };
+    runLoadingButton(button, "Creating...", function () {
+      upsertUser(user);
+      localStorage.setItem(STORAGE.accountCreated, "yes");
+      message.textContent = "Account created. Redirecting to Sign In...";
+      message.className = "form-message success";
+      playSiteSound("success");
+      setTimeout(function () {
+        window.location.href = "login.html";
+      }, 500);
+    });
+  });
+}
+
+function initLogin() {
+  const form = document.getElementById("loginForm");
+  if (!form) return;
+  const email = document.getElementById("loginEmail");
+  const password = document.getElementById("loginPassword");
+  const message = document.getElementById("loginMessage");
+  const button = document.getElementById("loginSubmitBtn");
+  bindLiveFieldReset(form);
+
+  if (localStorage.getItem(STORAGE.accountCreated) === "yes") {
+    message.textContent = "Account created successfully. Sign in with your new details.";
+    message.className = "form-message success mt-3";
+    localStorage.removeItem(STORAGE.accountCreated);
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    clearFieldState(email, "loginEmailError");
+    clearFieldState(password, "loginPasswordError");
+    let ok = true;
+
+    if (!validEmail(email.value.trim())) {
+      markInvalid(email, "loginEmailError", "Enter a valid email address.");
+      ok = false;
+    } else markValid(email);
+
+    if (!validPassword(password.value)) {
+      markInvalid(password, "loginPasswordError", "Enter your 8+ character password with upper, lower and number.");
+      ok = false;
+    } else markValid(password);
+
+    if (!ok) {
+      message.textContent = "Please correct the highlighted fields.";
+      message.className = "form-message error mt-3";
+      playSiteSound("error");
+      focusFirstInvalid(form);
+      return;
+    }
+
+    const normalizedEmail = email.value.trim().toLowerCase();
+    const user = getUsers().find(function (item) {
+      return String(item.email || "").toLowerCase() === normalizedEmail && item.password === password.value;
+    }) || null;
+    runLoadingButton(button, "Signing in...", function () {
+      if (!user) {
+        message.textContent = "Email or password is incorrect. Create an account first if needed.";
+        message.className = "form-message error mt-3";
+        playSiteSound("error");
+        return;
+      }
+      localStorage.setItem(STORAGE.session, user.email);
+      upsertUser(user);
+      message.textContent = "Signed in successfully. Opening your profile...";
+      message.className = "form-message success mt-3";
+      playSiteSound("success");
+      setTimeout(function () {
+        window.location.href = "profile.html";
+      }, 450);
+    });
+  });
+}
+
+function initProfile() {
+  const title = document.getElementById("profileTitle");
+  if (!title) return;
+  const user = getCurrentUser();
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const favorites = getFavorites();
+  const trip = getScopedJSON(STORAGE.lastTrip, null);
+  const firstName = user.name.trim().split(" ")[0] || "Traveler";
+
+  const profileAvatar = document.getElementById("profileAvatar");
+  const profileAvatarInput = document.getElementById("profileAvatarInput");
+  const removeAvatarBtn = document.getElementById("removeAvatarBtn");
+  const profileAvatarError = document.getElementById("profileAvatarError");
+  setAvatarContent(profileAvatar, user.avatar || "", firstName.charAt(0).toUpperCase());
+  if (removeAvatarBtn) removeAvatarBtn.hidden = !user.avatar;
+  title.textContent = "Welcome, " + firstName;
+  document.getElementById("profileName").textContent = user.name;
+  document.getElementById("profileEmail").textContent = user.email;
+  document.getElementById("profilePhone").textContent = user.phone;
+  document.getElementById("profileFavorites").textContent = favorites.length;
+  document.getElementById("profileTripDestination").textContent = trip ? trip.destination : "No trip yet";
+  document.getElementById("profileTripPeople").textContent = trip ? trip.people : "—";
+
+  const savedPreview = document.getElementById("profileSavedPreview");
+  if (savedPreview) {
+    if (!favorites.length) {
+      savedPreview.innerHTML = '<span class="destination-meta">No saved places yet.</span>';
+    } else {
+      const savedNames = favorites.map(function (id) {
+        const place = destinations.find(function (destination) { return destination.id === id; });
+        return place ? place.name : null;
+      }).filter(Boolean).slice(0, 4);
+      savedPreview.innerHTML = '<div class="destination-meta mb-2">Recently saved</div><div class="saved-chip-row">' + savedNames.map(function (name) {
+        return '<span class="saved-chip">' + name + '</span>';
+      }).join("") + '</div>';
+    }
+  }
+
+  if (profileAvatarInput) {
+    profileAvatarInput.addEventListener("change", function () {
+      const file = profileAvatarInput.files[0];
+      if (!file) return;
+      readAvatarFile(file, function (value) {
+        user.avatar = value;
+        upsertUser(user);
+        setAvatarContent(profileAvatar, value, firstName.charAt(0).toUpperCase());
+        if (removeAvatarBtn) removeAvatarBtn.hidden = false;
+        profileAvatarError.textContent = "";
+        updateAccountNavigation();
+        playSiteSound("success");
+        showToast("Profile photo updated");
+      }, function (error) {
+        profileAvatarInput.value = "";
+        profileAvatarError.textContent = error;
+        playSiteSound("error");
+      });
+    });
+  }
+
+  if (removeAvatarBtn) {
+    removeAvatarBtn.addEventListener("click", function () {
+      user.avatar = "";
+      upsertUser(user);
+      profileAvatarInput.value = "";
+      removeAvatarBtn.hidden = true;
+      profileAvatarError.textContent = "";
+      setAvatarContent(profileAvatar, "", firstName.charAt(0).toUpperCase());
+      updateAccountNavigation();
+      playSiteSound("click");
+      showToast("Profile photo removed");
+    });
+  }
+
+  document.getElementById("logoutBtn").addEventListener("click", function () {
+    playSiteSound("click");
+    localStorage.removeItem(STORAGE.session);
+    window.location.href = "index.html";
+  });
+}
+
+function prefillTripForm() {
+  const form = document.getElementById("tripForm");
+  if (!form) return;
+  const user = getCurrentUser();
+  if (!user) return;
+  document.getElementById("tripName").value = user.name;
+  document.getElementById("tripPhone").value = user.phone;
+  document.getElementById("tripEmail").value = user.email;
+}
+
+// ===== Trip Planner validation and per-account saved trip =====
+function initTripForm() {
+  const form = document.getElementById("tripForm");
+  if (!form) return;
+  prefillTripForm();
+  const requestedDestination = new URLSearchParams(window.location.search).get("destination");
+  const name = document.getElementById("tripName");
+  const phone = document.getElementById("tripPhone");
+  const email = document.getElementById("tripEmail");
+  const destination = document.getElementById("tripDestination");
+  const people = document.getElementById("tripPeople");
+  const agreement = document.getElementById("tripAgreement");
+  const notes = document.getElementById("tripNotes");
+  const message = document.getElementById("tripFormMessage");
+  const button = document.getElementById("tripSubmitBtn");
+  bindLiveFieldReset(form);
+
+  if (requestedDestination && destination) {
+    const optionExists = Array.from(destination.options).some(function (option) {
+      return option.value === requestedDestination;
+    });
+    if (optionExists) {
+      destination.value = requestedDestination;
+      const suggestionResult = document.getElementById("tripSuggestionResult");
+      if (suggestionResult) {
+        suggestionResult.textContent = "Selected from Hidden Gems: " + requestedDestination + ".";
+        suggestionResult.className = "form-message success mt-3";
+      }
+    }
+  }
+
+  form.addEventListener("submit", function (event) {
+    event.preventDefault();
+    clearFieldState(name, "tripNameError");
+    clearFieldState(phone, "tripPhoneError");
+    clearFieldState(email, "tripEmailError");
+    clearFieldState(destination, "tripDestinationError");
+    clearFieldState(people, "tripPeopleError");
+    clearFieldState(agreement, "tripAgreementError");
+    let ok = true;
+
+    if (!validName(name.value)) {
+      markInvalid(name, "tripNameError", "Enter your name (at least 2 characters).");
+      ok = false;
+    } else markValid(name);
+
+    if (!validPhone(phone.value.trim())) {
+      markInvalid(phone, "tripPhoneError", "Enter a valid phone number.");
+      ok = false;
+    } else markValid(phone);
+
+    if (!validEmail(email.value.trim())) {
+      markInvalid(email, "tripEmailError", "Enter a valid email address.");
+      ok = false;
+    } else markValid(email);
+
+    if (!destination.value) {
+      markInvalid(destination, "tripDestinationError", "Choose a destination.");
+      ok = false;
+    } else markValid(destination);
+
+    const peopleNumber = Number(people.value);
+    if (!Number.isInteger(peopleNumber) || peopleNumber < 1 || peopleNumber > 50) {
+      markInvalid(people, "tripPeopleError", "Enter a whole number from 1 to 50.");
+      ok = false;
+    } else markValid(people);
+
+    if (!agreement.checked) {
+      markInvalid(agreement, "tripAgreementError", "Confirm the information before submitting.");
+      ok = false;
+    } else markValid(agreement);
+
+    if (!ok) {
+      message.textContent = "Please correct the highlighted fields.";
+      message.className = "form-message error";
+      playSiteSound("error");
+      focusFirstInvalid(form);
+      return;
+    }
+
+    const trip = { name: name.value.trim(), phone: phone.value.trim(), email: email.value.trim(), destination: destination.value, people: peopleNumber, notes: notes.value.trim() };
+    runLoadingButton(button, "Please wait...", function () {
+      saveScopedJSON(STORAGE.lastTrip, trip);
+      message.textContent = "Your trip request is ready and saved in this browser.";
+      message.className = "form-message success";
+      showToast("Trip request submitted successfully");
+      playSiteSound("success");
+    });
+  });
+
+  form.addEventListener("reset", function () {
+    setTimeout(function () {
+      [name, phone, email, destination, people, agreement].forEach(function (input) {
+        input.classList.remove("input-error", "input-success");
+        input.removeAttribute("aria-invalid");
+      });
+      ["tripNameError", "tripPhoneError", "tripEmailError", "tripDestinationError", "tripPeopleError", "tripAgreementError"].forEach(function (id) {
+        document.getElementById(id).textContent = "";
+      });
+      message.textContent = "Complete the fields and submit when ready.";
+      message.className = "form-message";
+      prefillTripForm();
+    }, 0);
+  });
+}
+
+function getFavorites() {
+  return getScopedJSON(STORAGE.favorites, []);
+}
+
+function getRatings() {
+  return getScopedJSON(STORAGE.ratings, {});
+}
+
+function saveSearchState() {
   const search = document.getElementById("destinationSearch");
   const category = document.getElementById("destinationCategory");
   const sort = document.getElementById("destinationSort");
   const favoritesOnly = document.getElementById("favoritesOnly");
-  const clearFilters = document.getElementById("clearDestinationFilters");
-  const count = document.getElementById("destinationCount");
-  const emptyState = document.getElementById("noDestinations");
+  if (!search || !category || !sort || !favoritesOnly) return;
+  saveScopedJSON(STORAGE.search, { query: search.value, category: category.value, sort: sort.value, favoritesOnly: favoritesOnly.checked });
+}
 
-  if (!grid || !search || !category || !sort || !favoritesOnly || !clearFilters || !count || !emptyState) return;
+// ===== Destination Explorer: search, filters, favorites, ratings and clipboard =====
+function restoreSearchState() {
+  const state = getScopedJSON(STORAGE.search, null);
+  if (!state) return;
+  const search = document.getElementById("destinationSearch");
+  const category = document.getElementById("destinationCategory");
+  const sort = document.getElementById("destinationSort");
+  const favoritesOnly = document.getElementById("favoritesOnly");
+  if (search) search.value = state.query || "";
+  if (category) category.value = state.category || "all";
+  if (sort) sort.value = state.sort || "featured";
+  if (favoritesOnly) favoritesOnly.checked = Boolean(state.favoritesOnly);
+}
 
-  const favorites = [];
-  const ratings = {};
+function placeholderImage() {
+  return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+}
 
-  const destinationHelper = {
-    getMeta: function (destination) {
-      return destination.region + " · " + categoryName(destination.category);
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function applySearchHighlight() {
+  const query = $("#destinationSearch").val();
+  if (!query) return;
+  const pattern = new RegExp("(" + escapeRegExp(query) + ")", "gi");
+  $(".destination-title, .destination-region").each(function () {
+    const text = $(this).text();
+    $(this).html(text.replace(pattern, "<mark>$1</mark>"));
+  });
+}
+
+function renderDestinations() {
+  const grid = document.getElementById("destinationGrid");
+  if (!grid) return;
+  const query = document.getElementById("destinationSearch").value.trim().toLowerCase();
+  const category = document.getElementById("destinationCategory").value;
+  const sort = document.getElementById("destinationSort").value;
+  const favoritesOnly = document.getElementById("favoritesOnly").checked;
+  const favorites = getFavorites();
+  const ratings = getRatings();
+
+  let list = destinations.filter(function (destination) {
+    const matchesText = destination.name.toLowerCase().includes(query) || destination.region.toLowerCase().includes(query);
+    const matchesCategory = category === "all" || destination.category === category;
+    const matchesFavorite = !favoritesOnly || favorites.includes(destination.id);
+    return matchesText && matchesCategory && matchesFavorite;
+  });
+
+  if (sort === "name") list.sort(function (a, b) { return a.name.localeCompare(b.name); });
+  if (sort === "rating") list.sort(function (a, b) { return (ratings[b.id] || 0) - (ratings[a.id] || 0); });
+
+  grid.innerHTML = list.map(function (destination) {
+    const saved = favorites.includes(destination.id);
+    const rating = ratings[destination.id] || 0;
+    const stars = [1, 2, 3, 4, 5].map(function (value) {
+      return '<button class="rating-star ' + (value <= rating ? 'is-active' : '') + '" type="button" data-id="' + destination.id + '" data-rating="' + value + '" aria-pressed="' + (value === rating ? 'true' : 'false') + '" aria-label="Rate ' + destination.name + ' ' + value + ' stars">★</button>';
+    }).join("");
+    const fallback = destination.fallback || destination.image;
+    return '<div class="col-sm-12 col-md-6 col-lg-4"><article class="destination-card"><div class="destination-image-wrap"><img class="destination-image lazy-image" src="' + placeholderImage() + '" data-src="' + destination.image + '" data-fallback="' + fallback + '" alt="' + destination.name + '" loading="lazy" decoding="async"><button class="favorite-btn ' + (saved ? 'is-saved' : '') + '" type="button" data-id="' + destination.id + '" aria-pressed="' + (saved ? 'true' : 'false') + '" aria-label="' + (saved ? 'Remove ' + destination.name + ' from saved places' : 'Save ' + destination.name) + '">♥</button></div><div class="destination-body"><div class="d-flex justify-content-between align-items-center gap-2 mb-2"><span class="tag">' + destination.category + '</span><span class="destination-meta">' + destination.season + '</span></div><h3 class="destination-title mb-1">' + destination.name + '</h3><div class="destination-meta destination-region mb-3">' + destination.region + '</div><p class="destination-description">' + destination.description + '</p><div class="destination-actions"><a class="plan-place-link" href="planner.html?destination=' + encodeURIComponent(destination.name) + '">Plan this trip <span aria-hidden="true">→</span></a></div><div class="rating-row"><div><div class="destination-meta mb-1">Your rating</div><div class="rating-stars">' + stars + '</div></div><div class="card-actions"><span class="destination-meta">' + (saved ? 'Saved' : 'Save for later') + '</span><button class="copy-place-btn" type="button" data-copy-text="' + destination.name + ' — ' + destination.region + '" title="Copy destination" aria-label="Copy ' + destination.name + '">⧉</button></div></div></div></article></div>';
+  }).join("");
+
+  document.getElementById("destinationCount").textContent = list.length + " of " + destinations.length + " places shown";
+  document.getElementById("noDestinations").hidden = list.length !== 0;
+  applySearchHighlight();
+  loadVisibleImages();
+  saveSearchState();
+}
+
+function updateSearchSuggestions() {
+  const query = $("#destinationSearch").val().trim().toLowerCase();
+  const $box = $("#searchSuggestions");
+  if (!query) {
+    $box.prop("hidden", true).empty();
+    return;
+  }
+  const matches = destinations.filter(function (destination) {
+    return destination.name.toLowerCase().includes(query) || destination.region.toLowerCase().includes(query);
+  }).slice(0, 5);
+  $box.empty();
+  matches.forEach(function (destination) {
+    $("<button>", { type: "button", class: "search-suggestion", "data-value": destination.name })
+      .append($("<strong>").text(destination.name), $("<span>").text(destination.region))
+      .appendTo($box);
+  });
+  $box.prop("hidden", matches.length === 0);
+}
+
+function copyText(value) {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(value);
+  }
+  return new Promise(function (resolve, reject) {
+    const textarea = document.createElement("textarea");
+    textarea.value = value;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      const copied = document.execCommand("copy");
+      document.body.removeChild(textarea);
+      copied ? resolve() : reject(new Error("Copy failed"));
+    } catch (error) {
+      document.body.removeChild(textarea);
+      reject(error);
     }
-  };
-  const destinations = [
-    {
-      id: "bektau",
-      name: "Bektau-Ata",
-      region: "Karaganda Region",
-      category: "mountains",
-      image: "images/Bektau-Ata.jpeg",
-      short: "A granite mountain oasis rising unexpectedly from the Central Kazakhstan steppe.",
-      details: "Explore sculpted rock formations, quiet valleys and the famous sacred cave with a freshwater spring."
-    },
-    {
-      id: "bozzhyra",
-      name: "Bozzhyra",
-      region: "Mangystau Region",
-      category: "canyons",
-      image: "images/Bozzhyra.jpg",
-      short: "White limestone cliffs and enormous open landscapes on the Ustyurt Plateau.",
-      details: "Bozzhyra is best suited to prepared road trips, wide-angle photography and travelers who enjoy truly remote scenery."
-    },
-    {
-      id: "akkergeshen",
-      name: "Akkergeshen",
-      region: "Atyrau Region",
-      category: "canyons",
-      image: "images/Akkergeshen.jpg",
-      short: "Snow-white chalk formations shaped by an ancient sea and millions of years of erosion.",
-      details: "The plateau is known for unusual limestone shapes, fossils and a bright, almost otherworldly landscape."
-    },
-    {
-      id: "charyn",
-      name: "Charyn Canyon",
-      region: "Almaty Region",
-      category: "canyons",
-      image: "images/Charyn Canyon.jpeg",
-      short: "A dramatic canyon system with red sandstone walls and the Valley of Castles.",
-      details: "Walking routes reveal layered rock formations, open viewpoints and one of Kazakhstan's most recognizable natural landscapes."
-    },
-    {
-      id: "kolsay",
-      name: "Kolsay Lakes",
-      region: "Almaty Region",
-      category: "lakes",
-      image: "images/Kolsay_Lake.jpeg",
-      short: "Three alpine lakes surrounded by spruce forests in the northern Tien Shan.",
-      details: "The area is popular for hiking, horse riding and slow nature trips between mountain villages and clear blue water."
-    },
-    {
-      id: "altyn-emel",
-      name: "Altyn Emel",
-      region: "Jetisu Region",
-      category: "parks",
-      image: "images/altyn emel.jpg",
-      short: "A vast national park of desert plains, colorful mountains and the Singing Dune.",
-      details: "Its landscapes combine archaeology, wildlife, desert routes and the famous dune that can produce a deep humming sound."
-    },
-    {
-      id: "bayanaul",
-      name: "Bayanaul",
-      region: "Pavlodar Region",
-      category: "lakes",
-      image: "images/bayanauyl.jpg",
-      short: "Forested mountains and clear lakes forming a green oasis in the steppe.",
-      details: "Bayanaul works well for relaxed hiking, lake weekends and travelers looking for nature without a long expedition."
-    },
-    {
-      id: "karkaraly",
-      name: "Karkaraly",
-      region: "Karaganda Region",
-      category: "mountains",
-      image: "images/karkaraly.jpg",
-      short: "Pine-covered mountains, lakes and hiking routes in Central Kazakhstan.",
-      details: "Karkaraly combines forest trails, rock viewpoints and quiet natural areas that are especially pleasant in warm weather."
-    },
-    {
-      id: "turgen",
-      name: "Turgen Gorge",
-      region: "Almaty Region",
-      category: "parks",
-      image: "images/Turgen.jpg",
-      short: "A green mountain valley with waterfalls, forests and highland routes.",
-      details: "The gorge is a flexible day-trip or weekend option with waterfalls, picnic areas and access to deeper mountain routes."
-    },
-    {
-      id: "kaindy",
-      name: "Kaindy Lake",
-      region: "Almaty Region",
-      category: "lakes",
-      image: "images/Kaindy.jpg",
-      short: "A turquoise mountain lake famous for spruce trunks rising directly from the water.",
-      details: "Created after an earthquake, Kaindy has one of the country's most unusual lake landscapes and is often paired with Kolsay."
-    },
-    {
-      id: "burabay",
-      name: "Burabay",
-      region: "Akmola Region",
-      category: "lakes",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/View%20of%20the%20Burabay%20lake.jpg?width=1280",
-      short: "Blue lakes, pine forests and granite hills make Burabay one of northern Kazakhstan's classic nature escapes.",
-      details: "The area combines lakeside walks, forest viewpoints and distinctive rock formations, making it an easy choice for a scenic weekend trip."
-    },
-    {
-      id: "big-almaty",
-      name: "Big Almaty Lake",
-      region: "Almaty",
-      category: "lakes",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Big%20Almaty%20Lake.jpg?width=1280",
-      short: "A bright turquoise alpine reservoir framed by the high peaks of the Trans-Ili Alatau.",
-      details: "Its mountain setting and changing water color make it one of the most recognizable landscapes near Almaty."
-    },
-    {
-      id: "katon-karagay",
-      name: "Katon-Karagay",
-      region: "East Kazakhstan Region",
-      category: "mountains",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Katon-Karagay%20National%20Park.jpg?width=1280",
-      short: "Remote Altai landscapes with forests, rivers, alpine meadows and snow-capped mountains.",
-      details: "Katon-Karagay is a strong choice for travelers who want long nature routes, mountain scenery and a more remote expedition feel."
-    },
-    {
-      id: "tamgaly",
-      name: "Tamgaly",
-      region: "Almaty Region",
-      category: "heritage",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Petroglyphs%20in%20Tamgaly%2C%20Kazakhstan%2001.jpg?width=1280",
-      short: "An archaeological landscape known for ancient rock carvings set among dry hills and stone outcrops.",
-      details: "Tamgaly adds a cultural and historical route to the site, giving travelers an option beyond lakes, mountains and canyons."
-    },
-    {
-      id: "aksu-zhabagly",
-      name: "Aksu-Zhabagly",
-      region: "Turkistan Region",
-      category: "parks",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Aksu-Zhabagly.jpg?width=1280",
-      short: "A mountain nature reserve of deep gorges, wildflower slopes and Western Tien Shan scenery.",
-      details: "Aksu-Zhabagly is ideal for nature-focused routes, hiking and travelers who want a protected landscape far from city crowds."
-    },
-    {
-      id: "assy",
-      name: "Assy Plateau",
-      region: "Almaty Region",
-      category: "parks",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Asy%20Plateau%202016%2008%20east.jpg?width=1280",
-      short: "A high-altitude plateau of summer pastures, open valleys and distant mountain ridges.",
-      details: "Assy is best for a scenic road trip with wide landscapes, seasonal green meadows and a strong sense of open space."
-    },
-    {
-      id: "markakol",
-      name: "Lake Markakol",
-      region: "East Kazakhstan Region",
-      category: "lakes",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Markakol%201.jpg?width=1280",
-      short: "A remote mountain lake framed by the southern Altai and broad natural shoreline.",
-      details: "Markakol suits travelers who value quiet landscapes and are ready for a longer route into one of eastern Kazakhstan's remote lake regions."
-    },
-    {
-      id: "sherkala",
-      name: "Sherkala Mountain",
-      region: "Mangystau Region",
-      category: "mountains",
-      image: "https://commons.wikimedia.org/wiki/Special:FilePath/Sherkala%2C%20Mangistau%2C%20Kazakhstan.jpg?width=1280",
-      short: "A solitary limestone mountain rising above the desert landscapes of Mangystau.",
-      details: "Sherkala is a memorable stop on a Mangystau road trip, especially for geology, photography and wide desert panoramas."
-    }
-  ];
+  });
+}
 
-  function categoryName(value) {
-    switch (value) {
-      case "mountains":
-        return "Mountains";
-      case "lakes":
-        return "Lakes";
-      case "canyons":
-        return "Canyons & cliffs";
-      case "parks":
-        return "Parks & valleys";
-      case "heritage":
-        return "Heritage";
-      default:
-        return "Kazakhstan";
-    }
-  }
+function initDestinationExplorer() {
+  if (!document.getElementById("destinationGrid")) return;
+  restoreSearchState();
+  renderDestinations();
 
-  function isFavorite(id) {
-    return favorites.indexOf(id) !== -1;
-  }
-
-  function getFilteredDestinations() {
-    const query = search.value.trim().toLowerCase();
-    const selectedCategory = category.value;
-
-    const filtered = destinations.filter(function (destination) {
-      const matchesSearch =
-        destination.name.toLowerCase().indexOf(query) !== -1 ||
-        destination.region.toLowerCase().indexOf(query) !== -1;
-
-      const matchesCategory =
-        selectedCategory === "all" || destination.category === selectedCategory;
-
-      const matchesFavorites =
-        !favoritesOnly.checked || isFavorite(destination.id);
-
-      return matchesSearch && matchesCategory && matchesFavorites;
-    });
-
-    if (sort.value === "name") {
-      filtered.sort(function (a, b) {
-        if (a.name < b.name) return -1;
-        if (a.name > b.name) return 1;
-        return 0;
-      });
-    } else if (sort.value === "rating") {
-      filtered.sort(function (a, b) {
-        return Number(ratings[b.id] || 0) - Number(ratings[a.id] || 0);
-      });
-    } else if (sort.value === "favorites") {
-      filtered.sort(function (a, b) {
-        if (isFavorite(a.id) === isFavorite(b.id)) return 0;
-        if (isFavorite(a.id)) return -1;
-        return 1;
-      });
-    }
-
-    return filtered;
-  }
-
-  function renderDestinations() {
-    const filtered = getFilteredDestinations();
-    grid.innerHTML = "";
-
-    filtered.forEach(function (destination) {
-      const column = document.createElement("div");
-      column.className = "col-sm-12 col-md-6 col-lg-4";
-
-      const card = document.createElement("article");
-      card.className = "card destination-card destination-explorer-card h-100";
-
-      const saved = isFavorite(destination.id);
-
-      card.innerHTML = `
-        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" data-src="${destination.image}" class="destination-img lazy-image" alt="${destination.name}">
-        <div class="card-body d-flex flex-column p-4">
-          <div class="d-flex justify-content-between gap-3 align-items-start">
-            <div>
-              <p class="destination-meta mb-1">${destinationHelper.getMeta(destination)}</p>
-              <h3 class="card-title">${destination.name}</h3>
-            </div>
-            <div class="card-quick-actions">
-              <button class="copy-place-btn" type="button"
-                      data-copy-text="${destination.name} — ${destination.region}"
-                      aria-label="Copy ${destination.name}" title="Copy destination">⧉</button>
-              <button class="favorite-btn ${saved ? "is-saved" : ""}"
-                      type="button"
-                      data-favorite="${destination.id}"
-                      aria-pressed="${saved ? "true" : "false"}"
-                      aria-label="${saved ? "Remove from favorites" : "Save to favorites"}">
-                ${saved ? "♥" : "♡"}
-              </button>
-            </div>
-          </div>
-          <p class="card-text">${destination.short}</p>
-          <p class="destination-more" data-details="${destination.id}">${destination.details}</p>
-          <div class="destination-rating mb-3" data-rating="${destination.id}" aria-label="Rate ${destination.name}"></div>
-          <div class="d-flex gap-2 mt-auto">
-            <button class="btn btn-outline-primary flex-grow-1 read-more-btn"
-                    type="button"
-                    data-read-more="${destination.id}"
-                    aria-expanded="false">Read more</button>
-            <a href="planner.html" class="btn btn-primary flex-grow-1">Plan trip</a>
-          </div>
-        </div>
-      `;
-
-      column.appendChild(card);
-      grid.appendChild(column);
-
-      const ratingWrap = card.querySelector('[data-rating="' + destination.id + '"]');
-      const currentRating = Number(ratings[destination.id] || 0);
-
-      for (let i = 1; i <= 5; i++) {
-        const star = document.createElement("button");
-        star.type = "button";
-        star.className = "rating-star";
-        star.textContent = "★";
-        star.setAttribute("aria-label", "Rate " + i + " out of 5");
-
-        if (i <= currentRating) {
-          star.classList.add("is-active");
-        }
-
-        star.addEventListener("click", function () {
-          setRating(destination.id, i, ratingWrap);
-        });
-
-        ratingWrap.appendChild(star);
-      }
-    });
-
-    let placeWord = "places";
-    if (filtered.length === 1) placeWord = "place";
-
-    count.textContent = filtered.length + " " + placeWord + " found · " + favorites.length + " saved";
-
-    emptyState.hidden = filtered.length !== 0;
-
-    // Assignment 6 - Task 3 and Task 9: highlight matches and lazy-load visible images.
-    applySearchHighlight();
-    loadVisibleImages();
-
-    grid.querySelectorAll(".read-more-btn").forEach(function (button) {
-      button.addEventListener("click", handleReadMore);
-    });
-
-    grid.querySelectorAll(".favorite-btn").forEach(function (button) {
-      button.addEventListener("click", handleFavoriteClick);
-    });
-  }
-
-  function handleReadMore(event) {
-    const button = event.currentTarget;
-    const id = button.getAttribute("data-read-more");
-    const details = grid.querySelector('[data-details="' + id + '"]');
-    const isOpen = button.getAttribute("aria-expanded") === "true";
-
-    if (isOpen) {
-      details.style.display = "none";
-      button.setAttribute("aria-expanded", "false");
-      button.textContent = "Read more";
-    } else {
-      details.style.display = "block";
-      button.setAttribute("aria-expanded", "true");
-      button.textContent = "Show less";
-    }
-
-    playSiteSound("click");
-  }
-
-  function handleFavoriteClick(event) {
-    const button = event.currentTarget;
-    const id = button.getAttribute("data-favorite");
-    const index = favorites.indexOf(id);
-
-    if (index !== -1) {
-      favorites.splice(index, 1);
-      button.textContent = "♡";
-      button.classList.remove("is-saved");
-      button.setAttribute("aria-pressed", "false");
-      button.setAttribute("aria-label", "Save to favorites");
-      playSiteSound("click");
-      showToast("Removed from saved places");
-    } else {
-      favorites.push(id);
-      button.textContent = "♥";
-      button.classList.add("is-saved");
-      button.setAttribute("aria-pressed", "true");
-      button.setAttribute("aria-label", "Remove from favorites");
-      playSiteSound("favorite");
-      showToast("Saved to your favorites");
-    }
-
-    button.classList.add("saved-animation");
-
-    setTimeout(function () {
-      button.classList.remove("saved-animation");
-
-      if (favoritesOnly.checked || sort.value === "favorites") {
-        renderDestinations();
-      } else {
-        updateDestinationCount();
-      }
-    }, 450);
-  }
-
-  function updateDestinationCount() {
-    const filtered = getFilteredDestinations();
-    let placeWord = "places";
-    if (filtered.length === 1) placeWord = "place";
-
-    count.textContent = filtered.length + " " + placeWord + " found · " + favorites.length + " saved";
-  }
-
-  function setRating(id, value, container) {
-    ratings[id] = value;
-
-    const stars = container.querySelectorAll(".rating-star");
-
-    stars.forEach(function (star, index) {
-      if (index < value) {
-        star.classList.add("is-active");
-      } else {
-        star.classList.remove("is-active");
-      }
-    });
-
-    playSiteSound("rating");
-    showToast("Rating saved: " + value + " out of 5");
-
-    if (sort.value === "rating") {
-      renderDestinations();
-    }
-  }
-
-  function updateSearchSuggestions() {
-    const query = $("#destinationSearch").val().trim().toLowerCase();
-    const $suggestions = $("#searchSuggestions");
-
-    if (query.length < 1) {
-      hideSearchSuggestions();
+  $("#destinationSearch").on("keyup search", function (event) {
+    if (event && event.key === "Escape") {
+      $("#searchSuggestions").prop("hidden", true).empty();
       return;
     }
-
-    const matches = destinations.filter(function (destination) {
-      return destination.name.toLowerCase().indexOf(query) !== -1 ||
-             destination.region.toLowerCase().indexOf(query) !== -1;
-    }).slice(0, 5);
-
-    $suggestions.empty();
-
-    if (matches.length === 0) {
-      hideSearchSuggestions();
-      return;
-    }
-
-    matches.forEach(function (destination) {
-      $("<button>", {
-        type: "button",
-        class: "search-suggestion",
-        role: "option",
-        "data-value": destination.name
-      }).append(
-        $("<strong>").text(destination.name),
-        $("<span>").text(destination.region)
-      ).appendTo($suggestions);
-    });
-
-    $suggestions.prop("hidden", false);
-    $("#destinationSearch").attr("aria-expanded", "true");
-  }
-
-  function hideSearchSuggestions() {
-    $("#searchSuggestions").prop("hidden", true).empty();
-    $("#destinationSearch").attr("aria-expanded", "false");
-  }
-
-  function escapeRegExp(value) {
-    return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  }
-
-  function applySearchHighlight() {
-    const query = $("#destinationSearch").val().trim();
-    if (!query) return;
-
-    const pattern = new RegExp("(" + escapeRegExp(query) + ")", "gi");
-
-    $("#destinationGrid .card-title, #destinationGrid .destination-meta").each(function () {
-      const $element = $(this);
-      const originalText = $element.text();
-      $element.html(originalText.replace(pattern, '<mark class="search-highlight">$1</mark>'));
-    });
-  }
-
-  // Assignment 6 - Task 1: real-time search through a jQuery keyup handler.
-  $("#destinationSearch").on("keyup search", function () {
     renderDestinations();
     updateSearchSuggestions();
   });
 
-  // Assignment 6 - Task 2: choose an autocomplete suggestion.
+  $("#destinationCategory, #destinationSort, #favoritesOnly").on("change", function () {
+    playSiteSound("filter");
+    renderDestinations();
+  });
+
   $("#searchSuggestions").on("click", ".search-suggestion", function () {
     $("#destinationSearch").val($(this).attr("data-value"));
-    hideSearchSuggestions();
+    $("#searchSuggestions").prop("hidden", true).empty();
     renderDestinations();
   });
 
-  $(document).on("click", function (event) {
-    if ($(event.target).closest(".search-autocomplete-wrap").length === 0) {
-      hideSearchSuggestions();
-    }
+  $("#clearDestinationFilters").on("click", function () {
+    $("#destinationSearch").val("");
+    $("#destinationCategory").val("all");
+    $("#destinationSort").val("featured");
+    $("#favoritesOnly").prop("checked", false);
+    $("#searchSuggestions").prop("hidden", true).empty();
+    playSiteSound("filter");
+    renderDestinations();
   });
 
-  // Assignment 6 - Task 8: copy destination text and confirm the action.
+  $("#destinationGrid").on("click", ".favorite-btn", function () {
+    const id = $(this).attr("data-id");
+    const favorites = getFavorites();
+    const index = favorites.indexOf(id);
+    if (index === -1) {
+      favorites.push(id);
+      showToast("Destination saved");
+    } else {
+      favorites.splice(index, 1);
+      showToast("Destination removed from saved places");
+    }
+    saveScopedJSON(STORAGE.favorites, favorites);
+    playSiteSound("favorite");
+    renderDestinations();
+    updateAccountNavigation();
+  });
+
+  $("#destinationGrid").on("click", ".rating-star", function () {
+    const id = $(this).attr("data-id");
+    const value = Number($(this).attr("data-rating"));
+    const ratings = getRatings();
+    ratings[id] = value;
+    saveScopedJSON(STORAGE.ratings, ratings);
+    renderDestinations();
+    playSiteSound("rating");
+    showToast("Rating saved: " + value + " out of 5");
+  });
+
   $("#destinationGrid").on("click", ".copy-place-btn", function () {
-    const $button = $(this);
-    const textToCopy = $button.attr("data-copy-text");
-
-    copyTextToClipboard(textToCopy, function () {
-      $button.addClass("is-copied").text("✓").attr("title", "Copied to clipboard!");
-      showToast("Copied to clipboard!");
-
+    const button = $(this);
+    const value = button.attr("data-copy-text");
+    copyText(value).then(function () {
+      const original = button.text();
+      button.text("✓").addClass("is-copied");
+      playSiteSound("copy");
+      showToast("Copied to clipboard");
       setTimeout(function () {
-        $button.removeClass("is-copied").text("⧉").attr("title", "Copy destination");
-      }, 1400);
+        button.text(original).removeClass("is-copied");
+      }, 1200);
+    }).catch(function () {
+      showToast("Copy is unavailable in this browser");
+      playSiteSound("error");
     });
   });
-
-  category.addEventListener("change", renderDestinations);
-  sort.addEventListener("change", renderDestinations);
-  favoritesOnly.addEventListener("change", renderDestinations);
-
-  clearFilters.addEventListener("click", function () {
-    search.value = "";
-    category.value = "all";
-    sort.value = "featured";
-    favoritesOnly.checked = false;
-    hideSearchSuggestions();
-    renderDestinations();
-    playSiteSound("click");
-  });
-
-  renderDestinations();
 }
 
-// ============================================================
-// Assignment 6 - jQuery enhancements
-// ============================================================
+// Lazy-load destination images only near the viewport; swap to a local fallback if a remote image fails.
+function loadVisibleImages() {
+  const viewportBottom = $(window).scrollTop() + $(window).height() + 180;
+  $("img.lazy-image[data-src]").each(function () {
+    const $image = $(this);
+    if ($image.offset().top <= viewportBottom) {
+      const realSource = $image.attr("data-src");
+      const fallback = $image.attr("data-fallback");
+      $image.one("error", function () {
+        if (fallback && $image.attr("src") !== fallback) {
+          $image.attr("src", fallback);
+        }
+      });
+      $image.attr("src", realSource).removeAttr("data-src").addClass("is-loaded");
+    }
+  });
+}
 
-$(document).ready(function () {
-  // Task 0: jQuery setup check.
-  console.log("jQuery is ready!");
+function initStaticImageFallbacks() {
+  document.querySelectorAll("img[data-fallback]:not(.lazy-image)").forEach(function (image) {
+    function useFallback() {
+      const fallback = image.getAttribute("data-fallback");
+      if (fallback && image.getAttribute("src") !== fallback) image.setAttribute("src", fallback);
+    }
 
-  initScrollProgress();
-  initAnimatedCounters();
-  initLazyLoading();
-});
+    image.addEventListener("error", useFallback, { once: true });
+    // If the remote image failed before DOM ready, the error event has already happened.
+    if (image.complete && image.naturalWidth === 0) useFallback();
+  });
+}
 
-// Task 4: colorful scroll progress bar.
+function initLazyLoading() {
+  $(window).on("scroll resize", loadVisibleImages);
+  loadVisibleImages();
+}
+
+// ===== Shared jQuery UI effects: progress, counters and startup =====
 function initScrollProgress() {
-  if ($("#scrollProgress").length === 0) {
-    $("<div>", { id: "scrollProgress", class: "scroll-progress", "aria-hidden": "true" })
-      .append($("<span>"))
-      .prependTo("body");
-  }
-
-  function updateProgress() {
-    const scrollTop = $(window).scrollTop();
+  function update() {
     const scrollable = $(document).height() - $(window).height();
-    const percent = scrollable > 0 ? Math.min(100, Math.max(0, (scrollTop / scrollable) * 100)) : 0;
+    const percent = scrollable > 0 ? ($(window).scrollTop() / scrollable) * 100 : 0;
     $("#scrollProgress span").css("width", percent + "%");
   }
-
-  $(window).on("scroll resize", updateProgress);
-  updateProgress();
+  $(window).on("scroll resize", update);
+  update();
 }
 
-// Task 5: animated statistics counter on the Home page.
-function initAnimatedCounters() {
+function initCounters() {
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   $(".jquery-counter").each(function () {
     const $counter = $(this);
     const target = Number($counter.attr("data-target"));
-
+    if (reduceMotion) {
+      $counter.text(target);
+      return;
+    }
     $({ value: 0 }).animate({ value: target }, {
-      duration: 1200,
-      easing: "swing",
+      duration: 1100,
       step: function () {
         $counter.text(Math.floor(this.value));
       },
@@ -1088,59 +1210,26 @@ function initAnimatedCounters() {
   });
 }
 
-// Task 6: loading spinner and temporary disabled state on valid form submit.
-function runSubmitLoading(form, onDone) {
-  const $button = $(form).find('button[type="submit"]');
-  const originalHtml = $button.html();
+document.addEventListener("DOMContentLoaded", function () {
+  initTheme();
+  initSound();
+  initPasswordToggles();
+  initPasswordStrength();
+  updateAccountNavigation();
+  updateYear();
+  initAccordion();
+  initTripSuggestion();
+  initWeather();
+  initSignup();
+  initLogin();
+  initProfile();
+  initTripForm();
+  initDestinationExplorer();
+});
 
-  $button
-    .prop("disabled", true)
-    .html('<span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>Please wait...');
-
-  setTimeout(function () {
-    $button.prop("disabled", false).html(originalHtml);
-    onDone();
-  }, 1300);
-}
-
-// Task 8 helper: Clipboard API with a safe fallback.
-function copyTextToClipboard(text, onSuccess) {
-  function fallbackCopy() {
-    const $temporary = $("<textarea>")
-      .val(text)
-      .css({ position: "fixed", left: "-9999px", top: "0" })
-      .appendTo("body");
-
-    $temporary[0].select();
-    document.execCommand("copy");
-    $temporary.remove();
-    onSuccess();
-  }
-
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(text).then(onSuccess).catch(fallbackCopy);
-    return;
-  }
-
-  fallbackCopy();
-}
-
-// Task 9: jQuery lazy image loading using scroll, offset and attr('src').
-function initLazyLoading() {
-  $(window).on("scroll resize", loadVisibleImages);
-  loadVisibleImages();
-}
-
-function loadVisibleImages() {
-  const viewportBottom = $(window).scrollTop() + $(window).height() + 180;
-
-  $("img.lazy-image[data-src]").each(function () {
-    const $image = $(this);
-    if ($image.offset().top > viewportBottom) return;
-
-    const realSource = $image.attr("data-src");
-    if (!realSource) return;
-
-    $image.attr("src", realSource).removeAttr("data-src").addClass("is-loaded");
-  });
-}
+$(document).ready(function () {
+  initScrollProgress();
+  initCounters();
+  initStaticImageFallbacks();
+  initLazyLoading();
+});
