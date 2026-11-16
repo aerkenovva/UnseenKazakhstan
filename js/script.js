@@ -23,11 +23,11 @@ const destinations = [
   { id: "karkaraly", name: "Karkaraly", region: "Karaganda Region", category: "mountains", image: "images/karkaraly.jpg", season: "May–September", description: "Forested mountain country with lakes, granite ridges and peaceful hiking routes." },
   { id: "turgen", name: "Turgen Gorge", region: "Almaty Region", category: "parks", image: "images/turgen.jpg", season: "May–October", description: "A green gorge with river scenery, waterfalls and easy access from Almaty." },
   { id: "akkergeshen", name: "Akkergeshen", region: "Atyrau Region", category: "canyons", image: "images/akkergeshen.jpg", season: "April–June", description: "Ancient chalk formations and open steppe that create a rare white desert landscape." },
-  { id: "big-almaty", name: "Big Almaty Lake", region: "Almaty Region", category: "lakes", image: "https://upload.wikimedia.org/wikipedia/commons/3/3a/Big_Almaty_Lake_%28Bolshaya_Almatinka%29_in_June.jpg", fallback: "images/kolsay-lake.jpg", season: "June–October", description: "A high-altitude turquoise lake framed by the peaks of the Trans-Ili Alatau." },
-  { id: "issyk", name: "Issyk Lake", region: "Almaty Region", category: "lakes", image: "https://upload.wikimedia.org/wikipedia/commons/0/01/Issyk_lake.jpg", fallback: "images/kaindy.jpg", season: "May–September", description: "An emerald mountain lake near Almaty with forested slopes and a calm alpine setting." },
-  { id: "katon", name: "Katon-Karagay", region: "East Kazakhstan Region", category: "parks", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Katon%20Karagay%201.jpg", fallback: "images/karkaraly.jpg", season: "June–September", description: "Wide Altai valleys, rivers and mountain forests in one of Kazakhstan's largest national parks." },
-  { id: "sairam", name: "Sairam-Ugam", region: "Turkistan Region", category: "mountains", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/%D0%A1%D0%B0%D0%B9%D1%80%D0%B0%D0%BC%20%D1%83%D0%B3%D0%B0%D0%BC.jpg", fallback: "images/turgen.jpg", season: "May–October", description: "Western Tien Shan scenery with green valleys, rivers and dramatic mountain routes." },
-  { id: "ustyurt", name: "Ustyurt Plateau", region: "Mangystau Region", category: "deserts", image: "https://commons.wikimedia.org/wiki/Special:Redirect/file/Ustjurt-plateau%20%286593022525%29.jpg", fallback: "images/bozzhyra.jpg", season: "April–May", description: "A remote limestone plateau of cliffs, open horizons and stark desert landscapes." }
+  { id: "big-almaty", name: "Big Almaty Lake", region: "Almaty Region", category: "lakes", image: "images/kolsay-lake.jpg", fallback: "images/kolsay-lake.jpg", season: "June–October", description: "A high-altitude turquoise lake framed by the peaks of the Trans-Ili Alatau." },
+  { id: "issyk", name: "Issyk Lake", region: "Almaty Region", category: "lakes", image: "images/kaindy.jpg", fallback: "images/kaindy.jpg", season: "May–September", description: "An emerald mountain lake near Almaty with forested slopes and a calm alpine setting." },
+  { id: "katon", name: "Katon-Karagay", region: "East Kazakhstan Region", category: "parks", image: "images/karkaraly.jpg", fallback: "images/karkaraly.jpg", season: "June–September", description: "Wide Altai valleys, rivers and mountain forests in one of Kazakhstan's largest national parks." },
+  { id: "sairam", name: "Sairam-Ugam", region: "Turkistan Region", category: "mountains", image: "images/turgen.jpg", fallback: "images/turgen.jpg", season: "May–October", description: "Western Tien Shan scenery with green valleys, rivers and dramatic mountain routes." },
+  { id: "ustyurt", name: "Ustyurt Plateau", region: "Mangystau Region", category: "deserts", image: "images/bozzhyra.jpg", fallback: "images/bozzhyra.jpg", season: "April–May", description: "A remote limestone plateau of cliffs, open horizons and stark desert landscapes." }
 ];
 
 const weatherLocations = {
@@ -1009,12 +1009,17 @@ function renderDestinations() {
       return '<button class="rating-star ' + (value <= rating ? 'is-active' : '') + '" type="button" data-id="' + destination.id + '" data-rating="' + value + '" aria-pressed="' + (value === rating ? 'true' : 'false') + '" aria-label="Rate ' + destination.name + ' ' + value + ' stars">★</button>';
     }).join("");
     const fallback = destination.fallback || destination.image;
-    return '<div class="col-sm-12 col-md-6 col-lg-4"><article class="destination-card"><div class="destination-image-wrap"><img class="destination-image lazy-image" src="' + placeholderImage() + '" data-src="' + destination.image + '" data-fallback="' + fallback + '" alt="' + destination.name + '" loading="lazy" decoding="async"><button class="favorite-btn ' + (saved ? 'is-saved' : '') + '" type="button" data-id="' + destination.id + '" aria-pressed="' + (saved ? 'true' : 'false') + '" aria-label="' + (saved ? 'Remove ' + destination.name + ' from saved places' : 'Save ' + destination.name) + '">♥</button></div><div class="destination-body"><div class="d-flex justify-content-between align-items-center gap-2 mb-2"><span class="tag">' + destination.category + '</span><span class="destination-meta">' + destination.season + '</span></div><h3 class="destination-title mb-1">' + destination.name + '</h3><div class="destination-meta destination-region mb-3">' + destination.region + '</div><p class="destination-description">' + destination.description + '</p><div class="destination-actions"><a class="plan-place-link" href="planner.html?destination=' + encodeURIComponent(destination.name) + '">Plan this trip <span aria-hidden="true">→</span></a></div><div class="rating-row"><div><div class="destination-meta mb-1">Your rating</div><div class="rating-stars">' + stars + '</div></div><div class="card-actions"><span class="destination-meta">' + (saved ? 'Saved' : 'Save for later') + '</span><button class="copy-place-btn" type="button" data-copy-text="' + destination.name + ' — ' + destination.region + '" title="Copy destination" aria-label="Copy ' + destination.name + '">⧉</button></div></div></div></article></div>';
+    const isLocalImage = destination.image.startsWith("images/");
+    const imageClass = isLocalImage ? "destination-image" : "destination-image lazy-image";
+    const imageSource = isLocalImage ? destination.image : placeholderImage();
+    const lazySource = isLocalImage ? "" : ' data-src="' + destination.image + '"';
+    return '<div class="col-sm-12 col-md-6 col-lg-4"><article class="destination-card"><div class="destination-image-wrap"><img class="' + imageClass + '" src="' + imageSource + '"' + lazySource + ' data-fallback="' + fallback + '" alt="' + destination.name + '" loading="lazy" decoding="async"><button class="favorite-btn ' + (saved ? 'is-saved' : '') + '" type="button" data-id="' + destination.id + '" aria-pressed="' + (saved ? 'true' : 'false') + '" aria-label="' + (saved ? 'Remove ' + destination.name + ' from saved places' : 'Save ' + destination.name) + '">♥</button></div><div class="destination-body"><div class="d-flex justify-content-between align-items-center gap-2 mb-2"><span class="tag">' + destination.category + '</span><span class="destination-meta">' + destination.season + '</span></div><h3 class="destination-title mb-1">' + destination.name + '</h3><div class="destination-meta destination-region mb-3">' + destination.region + '</div><p class="destination-description">' + destination.description + '</p><div class="destination-actions"><a class="plan-place-link" href="planner.html?destination=' + encodeURIComponent(destination.name) + '">Plan this trip <span aria-hidden="true">→</span></a></div><div class="rating-row"><div><div class="destination-meta mb-1">Your rating</div><div class="rating-stars">' + stars + '</div></div><div class="card-actions"><span class="destination-meta">' + (saved ? 'Saved' : 'Save for later') + '</span><button class="copy-place-btn" type="button" data-copy-text="' + destination.name + ' — ' + destination.region + '" title="Copy destination" aria-label="Copy ' + destination.name + '">⧉</button></div></div></div></article></div>';
   }).join("");
 
   document.getElementById("destinationCount").textContent = list.length + " of " + destinations.length + " places shown";
   document.getElementById("noDestinations").hidden = list.length !== 0;
   applySearchHighlight();
+  attachImageFallbacks(grid);
   loadVisibleImages();
   saveSearchState();
 }
@@ -1160,17 +1165,22 @@ function loadVisibleImages() {
   });
 }
 
-function initStaticImageFallbacks() {
-  document.querySelectorAll("img[data-fallback]:not(.lazy-image)").forEach(function (image) {
+function attachImageFallbacks(root) {
+  const scope = root || document;
+  scope.querySelectorAll("img[data-fallback]:not(.lazy-image)").forEach(function (image) {
     function useFallback() {
       const fallback = image.getAttribute("data-fallback");
       if (fallback && image.getAttribute("src") !== fallback) image.setAttribute("src", fallback);
     }
 
     image.addEventListener("error", useFallback, { once: true });
-    // If the remote image failed before DOM ready, the error event has already happened.
+    // If an image failed before the handler was attached, repair it immediately.
     if (image.complete && image.naturalWidth === 0) useFallback();
   });
+}
+
+function initStaticImageFallbacks() {
+  attachImageFallbacks(document);
 }
 
 function initLazyLoading() {
