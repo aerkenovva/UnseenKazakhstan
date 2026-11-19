@@ -6,3 +6,11 @@ Sairam-Ugam — Wikimedia Commons, Сайрам угам.jpg
 Ustyurt Plateau — Daniel Hug, CC BY 2.0, Wikimedia Commons
 
 Note: the other bundled local project images were already part of earlier assignments. Their original source metadata was not present in the provided project materials, so no author or licence has been invented here.
+
+Photo corrections (Wikimedia Commons, remote URLs):
+Big Almaty Lake — Nessi Gileva, CC0: https://commons.wikimedia.org/wiki/File:Big_Almaty_Lake,_Almaty,_Kazakhstan_(Unsplash).jpg
+Issyk Lake — https://commons.wikimedia.org/wiki/File:Issyk_lake.jpg (see Commons file page for license and author)
+Katon-Karagay — Seitov Sultanbai: https://commons.wikimedia.org/wiki/File:Katon-Karagay_National_Park.jpg
+Sairam-Ugam — https://commons.wikimedia.org/wiki/File:Сайрам_угам.jpg (see Commons file page for license and author)
+Ustyurt Plateau — https://commons.wikimedia.org/wiki/File:Ustjurt-plateau_(6593022525).jpg (see Commons file page for license and author)
+These five photos load from Wikimedia Commons when online; if the photo service is unavailable, the card displays a labeled local placeholder, not an unrelated landscape.
